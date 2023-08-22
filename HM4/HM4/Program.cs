@@ -68,7 +68,7 @@ do
             break;
 
         case "mark-as":
-            Console.WriteLine("Input user item to mark-as");//Checking for an existing item in items array
+            Console.WriteLine("Input user item to mark-as");//Checking for an existing item in items array.
             userInputItem = Console.ReadLine();
             //userInputItem = userInputItem.ToLower();
             if (FindItem(items, userInputItem) == null)

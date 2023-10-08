@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultyThreading", "MultyThreading\MultyThreading.csproj", "{9DC6FAFA-A870-4BA5-B169-C615E07AD997}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClient_MapReduce", "HttpClient_MapReduce\HttpClient_MapReduce.csproj", "{E7B02073-C27D-4B36-AEDF-3852D319FEF0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9DC6FAFA-A870-4BA5-B169-C615E07AD997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DC6FAFA-A870-4BA5-B169-C615E07AD997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DC6FAFA-A870-4BA5-B169-C615E07AD997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DC6FAFA-A870-4BA5-B169-C615E07AD997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7B02073-C27D-4B36-AEDF-3852D319FEF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7B02073-C27D-4B36-AEDF-3852D319FEF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7B02073-C27D-4B36-AEDF-3852D319FEF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7B02073-C27D-4B36-AEDF-3852D319FEF0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01F2B08B-8C9D-481E-8376-086BA0EE7BF9}
+	EndGlobalSection
+EndGlobal

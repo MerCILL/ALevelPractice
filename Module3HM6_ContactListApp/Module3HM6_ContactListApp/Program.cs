@@ -32,7 +32,7 @@ var contact4 = new Contact()
     Email = "qqq@gmail.com"
 };
 
-//Console.WriteLine(contact1);
-//Console.WriteLine(contact2);
-//Console.WriteLine(contact3);
+Console.WriteLine(contact1);
+Console.WriteLine(contact2);
+Console.WriteLine(contact3);
 Console.WriteLine(contact4);

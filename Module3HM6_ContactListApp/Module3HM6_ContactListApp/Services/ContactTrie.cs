@@ -76,22 +76,16 @@ namespace Module3HM6_ContactListApp.Services
             return false;
         }
 
-        public SortedSet<Contact> SearchContacts(string prefix)
+        public Dictionary<string, Contact> SearchContacts(string prefix)
         {
             try
             {
-                //if (string.IsNullOrEmpty(prefix))
-                //{
-                //    //Console.WriteLine("Prefix is null or empty.");
-                //    return new SortedSet<Contact>(new ContactComparer());
-                //}
-
                 if (!prefix.StartsWith("+"))
                 {
                     prefix = "+" + prefix;
                 }
 
-                var result = new SortedSet<Contact>(new ContactComparer());
+                var result = new Dictionary<string, Contact>();
                 var node = _root;
 
                 foreach (var ch in prefix)
@@ -113,11 +107,12 @@ namespace Module3HM6_ContactListApp.Services
             }
         }
 
-        private void FindAllContacts(TrieNode node, SortedSet<Contact> result)
+
+        private void FindAllContacts(TrieNode node, Dictionary<string, Contact> result)
         {
             if (node.Contact != null)
             {
-                result.Add(node.Contact);
+                result[node.Contact.Phone] = node.Contact;
             }
 
             foreach (var child in node.Children.Values)

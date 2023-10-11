@@ -52,7 +52,7 @@ namespace Module3HM6_ContactListApp.Models
 
         public override string ToString()
         {
-            return $"Name: {this._name} Surname: {this._surname} Phone: {this._phone} Email: {this._email}";
+            return $"Name: {this._name}; Surname: {this._surname}; Phone: {this._phone}; Email: {this._email}";
         }
         
 

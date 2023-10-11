@@ -1,4 +1,5 @@
 ﻿using Module3HM6_ContactListApp.Models;
+using Module3HM6_ContactListApp.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,24 @@ namespace Module3HM6_ContactListApp.Services
     public class App
     {
         private readonly ContactService _contactService;
-        public App(ContactService contactService) 
+        public App(ContactService contactService)
         {
             _contactService = contactService;
+        }
+
+        public void Run()
+        {
+            string command;
+            do
+            {
+                Console.WriteLine("enter :\"add\": to add contact");
+                Console.WriteLine("enter :\"store\": to add contacts to file");
+                Console.WriteLine("enter :\"read\": to read all contacts from file");
+                Console.WriteLine("enter :\"remove\": to remove contact");
+                Console.WriteLine("enter :\"remove\": to remove contact from file");
+                Console.WriteLine("enter :\"exit\": to stop app");
+                command = Console.ReadLine();
+            } while (command != "exit");
         }
 
         public void AddContact()
@@ -22,20 +38,23 @@ namespace Module3HM6_ContactListApp.Services
                 Contact contact = new Contact();
                 Console.Write("Enter contact name: ");
                 contact.Name = Console.ReadLine();
+                contact.Name = ContactValidator.ValidateName(contact.Name);
                 Console.Write("Enter contact surname(can be empty): ");
                 contact.Surname = Console.ReadLine();
+                contact.Surname = ContactValidator.ValidateSurname(contact.Surname);
                 Console.Write("Enter contact phone: ");
                 contact.Phone = Console.ReadLine();
+                contact.Phone = ContactValidator.ValidatePhone(contact.Phone);
                 Console.Write("Enter contact email(can be empty): ");
                 contact.Email = Console.ReadLine();
+                contact.Email = ContactValidator.ValidateEmail(contact.Email);
 
                 Console.WriteLine();
-                bool isAdded = _contactService.AddContact(contact);
-
+                bool isAdded = _contactService.AddContactAsync(contact).Result;
                 if (isAdded) Console.WriteLine("Contact was succesfully added");
                 //else throw new Exception("adding: false");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine($"Adding contact error: {ex.Message}");
             }
@@ -47,7 +66,8 @@ namespace Module3HM6_ContactListApp.Services
             {
                 Console.WriteLine("Enter phone to delete contact");
                 string phone = Console.ReadLine();
-                bool isRemoved = _contactService.RemoveContact(phone);
+                phone = ContactValidator.ValidatePhone(phone);
+                bool isRemoved = _contactService.RemoveContactAsync(phone).Result;
 
                 if (isRemoved) Console.WriteLine("Contact was succesfully deleted");
                 //else throw new Exception("removing: false");
@@ -56,26 +76,17 @@ namespace Module3HM6_ContactListApp.Services
             {
                 Console.WriteLine($"Deleting contact error {ex.Message}");
             }
-           
         }
 
-        public void SearchContacts()
+        public void ClearFile()
         {
-            try
-            {
-                Console.Write("Enter phone to search: ");
-                string prefix = Console.ReadLine();
-
-                SortedSet<Contact> contacts = _contactService.SearchContacts(prefix);
-
-                _contactService.DisplayContacts(contacts);
-            }
+            try { _contactService.ClearFile(); }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error while displaying contacts: {ex.Message}");
+                Console.WriteLine($"Clearing file content error: {ex.Message}");
             }
         }
-
+       
         public void DisplayContacts()
         {
             try
@@ -86,6 +97,26 @@ namespace Module3HM6_ContactListApp.Services
             {
                 Console.WriteLine($"Display contacts error: {ex.Message}");
             }
+        }
+
+        public void SearchContactsByPrefix()
+        {
+            try
+            {
+
+                var searchResult = new Dictionary<string, Contact>();
+
+                Console.WriteLine("Enter prefix to search: ");
+                string prefix = Console.ReadLine();
+
+                searchResult = _contactService.SearchContactsByPrefix(prefix);
+                _contactService.DisplayContacts(searchResult);
+            }
+            catch(Exception ex) 
+            {
+                Console.WriteLine($"Searching contact error: {ex.Message}");
+            }
+
         }
 
     }

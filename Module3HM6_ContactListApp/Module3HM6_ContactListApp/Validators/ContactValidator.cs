@@ -33,6 +33,7 @@ namespace Module3HM6_ContactListApp.Validators
             if (value.StartsWith("0")) value = "+38" + value; //0504028751 ---> +380504028751
             if (value.StartsWith("+0")) value = "+380" + value.Substring(2);//+0504028751 ---> +380504028751
             if (!value.StartsWith("+")) value = "+" + value;//12223334455 ---> +12223334455
+            if (value.StartsWith("380")) value = "+" + value;
 
             var countryCode1 = int.Parse(value.Substring(1, 1));
             var countryCode2 = int.Parse(value.Substring(1, 2));

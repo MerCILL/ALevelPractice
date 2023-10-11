@@ -35,16 +35,19 @@ var contact4 = new Contact()
 
 
 ContactService contactService = new ContactService();
-contactService.AddContact(contact1);
-contactService.AddContact(contact2);
-contactService.AddContact(contact3);
-contactService.AddContact(contact4);
+//await contactService.AddContactAsync(contact1);
+//await contactService.AddContactAsync(contact2);
+//await contactService.AddContactAsync(contact3);
+//await contactService.AddContactAsync(contact4);
+//await contactService.RemoveContactAsync("+380665351626");
+//contactService.DisplayContacts();
+
 App app = new(contactService);
-//app.AddContact();
-//app.AddContact();
+app.ClearFile();
+app.AddContact();
+app.AddContact();
+//app.RemoveContact();
 app.DisplayContacts();
-app.SearchContacts();
-app.RemoveContact();
-app.DisplayContacts();
-app.SearchContacts();
-//app.DisplayContacts();
+Console.WriteLine();
+app.SearchContactsByPrefix();
+

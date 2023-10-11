@@ -11,19 +11,20 @@ namespace Module3HM6_ContactListApp.Validators
 {
     public class ContactValidator
     {
-        public static void ValidateName(string value)
-        {
-            if (string.IsNullOrEmpty(value)) throw new ArgumentException("Name can't be empty");
-            if (value.Length > 25) throw new ArgumentException("Name length can't be longer than 25 characters");            
-        }
-
-        public static void ValidateSurname(string value)
+        public static string ValidateName(string value)
         {
             if (string.IsNullOrEmpty(value)) throw new ArgumentException("Name can't be empty");
             if (value.Length > 25) throw new ArgumentException("Name length can't be longer than 25 characters");
+            return value;
         }
 
-        public static void ValidatePhone(string value)
+        public static string ValidateSurname(string value)
+        {
+            if (value.Length > 25) throw new ArgumentException("Name length can't be longer than 25 characters");
+            return value;
+        }
+
+        public static string ValidatePhone(string value)
         {
             if (string.IsNullOrEmpty(value)) throw new ArgumentException("Phone number can't be empty");
             if (value.Length < 10 || value.Length > 15) throw new ArgumentException("Phone number length must be between 10 and 15 characters");
@@ -47,11 +48,15 @@ namespace Module3HM6_ContactListApp.Validators
 
             var uniqueLeftPhoneNumber = value.Substring(startSubstringPosition);
             if (!Regex.IsMatch(uniqueLeftPhoneNumber, @"^\d{9,10}$")) throw new ArgumentException("Phone must contain 10 digits after code");
+
+            return value;
         }
 
-        public static void ValidateEmail(string value) 
+        public static string ValidateEmail(string value) 
         {
+            if (string.IsNullOrEmpty(value)) return value;
             if (!Regex.IsMatch(value, @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$")) throw new ArgumentException("Email validation error");
+            return value;
         }
 
     }

@@ -1,114 +1,105 @@
 ﻿using Module3HM6_ContactListApp.Models;
 using Module3HM6_ContactListApp.Validators;
+using System.Collections.Concurrent;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Text.Json;
 
 namespace Module3HM6_ContactListApp.Services
 {
     public class ContactService
     {
-        private readonly Dictionary<string, Contact> _contacts;
+        private ConcurrentDictionary<string, Contact> _contacts;
         private readonly ContactTrie _contactTrie;
-        private readonly string _filePath = Path.Combine(Directory.GetCurrentDirectory(), "../../../Contact.txt");
+        private readonly string _filePath;
 
-        public ContactService()
+        private ContactService()
         {
-            _contacts = new Dictionary<string, Contact>();
+            _contacts = new ConcurrentDictionary<string, Contact>();
             _contactTrie = new ContactTrie();
+            _filePath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../../../Contact.txt"));
+        }
+
+        public static async Task<ContactService> CreateAsync()
+        {
+            var contactService = new ContactService();
+            await contactService.ReadFromFileAsync();
+            return contactService;
         }
 
         public async Task<bool> AddContactAsync(Contact contact)
         {
-            try
-            {
-                if (!_contacts.ContainsKey(contact.Phone))
-                {
-                    await ReadFromFileAsync();
-                    if (_contacts.ContainsKey(contact.Phone))
-                        throw new Exception("Contact with this phone already exists.");
-                }
-           
-                _contacts[contact.Phone] = contact;
-                _contactTrie.Insert(contact.Phone, contact);
+            if (_contacts.ContainsKey(contact.Phone)) throw new Exception("This contact already exist");
 
-                using (StreamWriter sw = new(_filePath, true))
-                    await sw.WriteLineAsync(contact.ToString());
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Adding contact error: {ex.Message}");
-                return false; ;
-            }
+            _contacts.TryAdd(contact.Phone, contact);
+            _contactTrie.Insert(contact.Phone, contact);
+
+            string json = JsonSerializer.Serialize(contact);
+            using (var streamWriter = new StreamWriter(_filePath, true))
+                await streamWriter.WriteLineAsync(json);
+
+            return true;
         }
 
         public async Task<bool> RemoveContactAsync(string phone)
         {
-            try
+            ContactValidator.ValidatePhone(phone);
+            if (!_contacts.ContainsKey(phone))
+                throw new Exception("No contact with this phone exists.");
+
+            _contacts.TryRemove(phone, out _);
+            _contactTrie.Remove(phone);
+
+            if (_contacts.Count > 0)
             {
-                ContactValidator.ValidatePhone(phone);
-                if (!_contacts.ContainsKey(phone))
-                    throw new Exception("No contact with this phone exists.");
-
-                _contacts.Remove(phone);
-                _contactTrie.Remove(phone);
-
-                using (StreamWriter writer = new StreamWriter(_filePath, false))
-                {
-                    foreach (var contact in _contacts.Values)
-                        await writer.WriteLineAsync(contact.ToString());
-                }
-
-                return true;
+                string json = JsonSerializer.Serialize(_contacts.Values);
+                await File.WriteAllTextAsync(_filePath, json);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Removing contact error: {ex.Message}");
-                return false;
-            }
+            else await File.WriteAllTextAsync(_filePath, string.Empty);
+
+            return true;
         }
 
         public void CheckFileExist()
-        { 
+        {
             if (!File.Exists(_filePath))
                 File.Create(_filePath).Dispose();
         }
 
         public async Task ReadFromFileAsync()
         {
-            if (!File.Exists(_filePath)) throw new FileNotFoundException("No one contact has been added");
+            CheckFileExist();
 
-            using (StreamReader reader = new StreamReader(_filePath))
+            var contactLines = await File.ReadAllLinesAsync(_filePath);
+
+            _contacts.Clear();
+
+            foreach (var contactLine in contactLines)
             {
-                string line;
-                while ((line = await reader.ReadLineAsync()) != null)
+                if (!string.IsNullOrWhiteSpace(contactLine))
                 {
-                    string[] parts = line.Split(';');
-
-                    Contact contact = new()
+                    try
                     {
-                        Name = parts[0].Split(':')[1].Trim(),
-                        Surname = parts[1].Split(':')[1].Trim(),
-                        Phone = parts[2].Split(':')[1].Trim(),
-                        Email = parts[3].Split(':')[1].Trim(),
-                    };
-
-                    if (!_contacts.ContainsKey(contact.Phone))
+                        var contact = JsonSerializer.Deserialize<Contact>(contactLine);
+                        _contacts.TryAdd(contact.Phone, contact);
+                    }
+                    catch (JsonException ex)
                     {
-                        _contacts[contact.Phone] = contact;
-                        _contactTrie.Insert(contact.Phone, contact);
+                        throw new Exception($"Failed to deserialize line: ({contactLine})... Error: {ex.Message}");
                     }
                 }
             }
         }
-
-        public async void DisplayContacts()
+        public void DisplayContacts()
         {
-            await ReadFromFileAsync();
-            foreach (var contact in _contacts)
-                Console.WriteLine(contact.Value.ToString());
+            foreach (var contact in _contacts.Values)
+            {
+                Console.WriteLine(contact.ToString());
+            }
         }
 
-        public void DisplayContacts(Dictionary<string, Contact> contacts)
+        public void DisplayContacts(ConcurrentDictionary<string, Contact> contacts)
         {
             foreach (var contact in contacts)
                 Console.WriteLine(contact.Value.ToString());
@@ -119,18 +110,9 @@ namespace Module3HM6_ContactListApp.Services
             using (FileStream fs = new FileStream(_filePath, FileMode.Open)) fs.SetLength(0);
         }
 
-        public Dictionary<string, Contact> SearchContactsByPrefix(string prefix)
-        {
-            try
-            {
-                return _contactTrie.SearchContacts(prefix);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Searching contacts error: {ex.Message}");
-                return null;
-            }
-        }
+        public ConcurrentDictionary<string, Contact> SearchContactsByPrefix(string prefix) => _contactTrie.SearchContacts(prefix);
+
+        public string GetFilePath() => _filePath;
 
     }
 }

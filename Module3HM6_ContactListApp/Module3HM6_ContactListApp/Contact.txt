@@ -1,2 +1,2 @@
-Name: jenia; Surname: trip; Phone: +380665351626; Email: ted270503@gmail.com
-Name: max; Surname: max; Phone: +380504028750; Email: 
+{"Name":"test1","Surname":"test1","Phone":"\u002B380504028751","Email":""}
+{"Name":"380665351626","Surname":"","Phone":"\u002B380665351626","Email":""}

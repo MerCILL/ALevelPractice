@@ -1,6 +1,7 @@
 ﻿using Module3HM6_ContactListApp.Models;
 using Module3HM6_ContactListApp.Validators;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,27 +12,95 @@ namespace Module3HM6_ContactListApp.Services
     public class App
     {
         private readonly ContactService _contactService;
+        private FileSystemWatcher _watcher;
         public App(ContactService contactService)
         {
             _contactService = contactService;
+            InitializeWatcher();
         }
 
         public void Run()
         {
-            string command;
-            do
+            bool exit = false;
+            while (!exit)
             {
-                Console.WriteLine("enter :\"add\": to add contact");
-                Console.WriteLine("enter :\"store\": to add contacts to file");
-                Console.WriteLine("enter :\"read\": to read all contacts from file");
-                Console.WriteLine("enter :\"remove\": to remove contact");
-                Console.WriteLine("enter :\"remove\": to remove contact from file");
-                Console.WriteLine("enter :\"exit\": to stop app");
-                command = Console.ReadLine();
-            } while (command != "exit");
+                Console.WriteLine("Select an option:");
+                Console.WriteLine(":store: to add contact");
+                Console.WriteLine(":read: to display contacts");
+                Console.WriteLine(":remove: to remove contact");
+                Console.WriteLine(":search: to find contacts by prefix");
+                Console.WriteLine(":exit: to close program");
+                Console.WriteLine("");
+                string option = Console.ReadLine();
+                option = option.ToLower();
+
+                switch (option)
+                {
+                    case "store":                      
+                    case "remove":
+                        using (var mutex = new Mutex(false, "WriteToFile"))
+                        {
+                            mutex.WaitOne();
+                            try
+                            {
+                                switch (option)
+                                {
+                                    case "store":
+                                        AddContact();
+                                        break;
+                                    case "remove":
+                                        RemoveContact();
+                                        break;
+                                }
+                            }
+                            finally
+                            {
+                                mutex.ReleaseMutex();
+                            }                         
+                        }
+                        break;
+                    case "read":
+                        DisplayContacts();
+                        Console.WriteLine();
+                        break;
+                    case "search":
+                        SearchContactsByPrefix();
+                        Console.WriteLine();
+                        break;
+                    case "exit":
+                        exit = true;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid command");
+                        Console.WriteLine();
+                        break;
+                }
+            }
         }
 
-        public void AddContact()
+        public void InitializeWatcher()
+        {
+            try
+            {
+
+
+                var filePath = _contactService.GetFilePath();
+                _watcher = new FileSystemWatcher
+                {
+                    Path = Path.GetDirectoryName(filePath),
+                    Filter = Path.GetFileName(filePath)
+                };
+
+                _watcher.Changed += OnChanged;
+                _watcher.EnableRaisingEvents = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Monitor initialization error: {ex.Message}");
+            }
+        }
+  
+        private void AddContact()
         {
             try
             {
@@ -60,7 +129,7 @@ namespace Module3HM6_ContactListApp.Services
             }
         }
 
-        public void RemoveContact()
+        private void RemoveContact()
         {
             try
             {
@@ -78,7 +147,7 @@ namespace Module3HM6_ContactListApp.Services
             }
         }
 
-        public void ClearFile()
+        private void ClearFile()
         {
             try { _contactService.ClearFile(); }
             catch (Exception ex)
@@ -87,7 +156,7 @@ namespace Module3HM6_ContactListApp.Services
             }
         }
        
-        public void DisplayContacts()
+        private void DisplayContacts()
         {
             try
             {
@@ -99,12 +168,12 @@ namespace Module3HM6_ContactListApp.Services
             }
         }
 
-        public void SearchContactsByPrefix()
+        private void SearchContactsByPrefix()
         {
             try
             {
 
-                var searchResult = new Dictionary<string, Contact>();
+                var searchResult = new ConcurrentDictionary<string, Contact>();
 
                 Console.WriteLine("Enter prefix to search: ");
                 string prefix = Console.ReadLine();
@@ -118,6 +187,12 @@ namespace Module3HM6_ContactListApp.Services
             }
 
         }
+
+        private void OnChanged(object source, FileSystemEventArgs e)
+        {
+            Console.WriteLine($"File changed: {e.FullPath} {e.ChangeType}");
+        }
+
 
     }
 }

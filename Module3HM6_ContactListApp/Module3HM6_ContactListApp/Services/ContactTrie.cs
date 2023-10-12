@@ -1,5 +1,6 @@
 ﻿using Module3HM6_ContactListApp.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Module3HM6_ContactListApp.Services
     {
         private class TrieNode
         {
-            public Dictionary<char, TrieNode> Children = new Dictionary<char, TrieNode>();
+            public ConcurrentDictionary<char, TrieNode> Children = new ConcurrentDictionary<char, TrieNode>();
             public Contact Contact;
         }
 
@@ -70,13 +71,13 @@ namespace Module3HM6_ContactListApp.Services
             bool shouldDeleteCurrentNode = Remove(node, key, index + 1) && node.Contact == null;
             if (shouldDeleteCurrentNode)
             {
-                current.Children.Remove(ch);
+                current.Children.TryRemove(ch, out _);
                 return current.Children.Count == 0;
             }
             return false;
         }
 
-        public Dictionary<string, Contact> SearchContacts(string prefix)
+        public ConcurrentDictionary<string, Contact> SearchContacts(string prefix)
         {
             try
             {
@@ -85,7 +86,7 @@ namespace Module3HM6_ContactListApp.Services
                     prefix = "+" + prefix;
                 }
 
-                var result = new Dictionary<string, Contact>();
+                var result = new ConcurrentDictionary<string, Contact>();
                 var node = _root;
 
                 foreach (var ch in prefix)
@@ -108,7 +109,7 @@ namespace Module3HM6_ContactListApp.Services
         }
 
 
-        private void FindAllContacts(TrieNode node, Dictionary<string, Contact> result)
+        private void FindAllContacts(TrieNode node, ConcurrentDictionary<string, Contact> result)
         {
             if (node.Contact != null)
             {
@@ -120,5 +121,20 @@ namespace Module3HM6_ContactListApp.Services
                 FindAllContacts(child, result);
             }
         }
+
+        public bool Contains(string key)
+        {
+            var node = _root;
+            foreach (var ch in key)
+            {
+                if (!node.Children.ContainsKey(ch))
+                {
+                    return false;
+                }
+                node = node.Children[ch];
+            }
+            return node.Contact != null;
+        }
+
     }
 }

@@ -1,0 +1,33 @@
+version: '3.4'
+services:
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on: 
+      - mssql
+    ports:
+      - 8000:80
+      - 8001:443
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment: 
+      SA_PASSWORD: "${SA_PASSWORD}"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1433:1433
+    volumes:
+      - sql_data:/var/opt/mssql
+volumes:
+  sql_data:
+
+networks:
+  default:
+    driver: bridge
+    internal: false
+    attachable: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.0.4/24
+          gateway: 192.168.0.4

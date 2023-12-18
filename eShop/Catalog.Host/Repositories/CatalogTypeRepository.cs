@@ -1,5 +1,8 @@
 ﻿using Catalog.Host.Data;
 using Catalog.Host.Data.Entities;
+using Catalog.Host.Models.Requests.AddRequests;
+using Catalog.Host.Models.Requests.DeleteRequests;
+using Catalog.Host.Models.Requests.UpdateRequests;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +61,44 @@ namespace Catalog.Host.Repositories
             return await _dbContext.CatalogTypes.FindAsync(id);
         }
 
+        public async Task<int?> Add(AddCatalogTypeRequest typeToAdd)
+        {
+            var type = await _dbContext.AddAsync(new CatalogType
+            {
+                Type = typeToAdd.Type
+            });
+
+            await _dbContext.SaveChangesAsync();
+
+            return type.Entity.Id;
+        }
+
+        public async Task<CatalogType> Update(UpdateCatalogTypeRequest typeToUpdate)
+        {
+            var type = await _dbContext.CatalogTypes.FindAsync(typeToUpdate.Id);
+            if (type == null)
+            {
+                throw new KeyNotFoundException("Type not found");
+            }
+
+            type.Type = typeToUpdate.Type;
+
+            await _dbContext.SaveChangesAsync();
+
+            return type;
+        }
+
+        public async Task Delete(DeleteCatalogTypeRequest typeToDelete)
+        {
+            var type = await _dbContext.CatalogTypes.FindAsync(typeToDelete.Id);
+            if (type == null)
+            {
+                throw new KeyNotFoundException("Type not found");
+            }
+
+            _dbContext.CatalogTypes.Remove(type);
+            await _dbContext.SaveChangesAsync();
+        }
 
 
     }

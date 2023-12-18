@@ -1,6 +1,11 @@
-﻿using Catalog.Host.Data;
+﻿using AutoMapper;
+using Catalog.Host.Data;
 using Catalog.Host.Models.DTOs;
 using Catalog.Host.Models.Requests;
+using Catalog.Host.Models.Requests.AddRequests;
+using Catalog.Host.Models.Requests.DeleteRequests;
+using Catalog.Host.Models.Requests.UpdateRequests;
+using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Repositories;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
@@ -10,14 +15,17 @@ namespace Catalog.Host.Services
     public class CatalogBrandService : BaseDataService<ApplicationDbContext>, ICatalogBrandService
     {
         private readonly ICatalogBrandRepository _catalogBrandRepository;
+        private readonly IMapper _mapper;
 
         public CatalogBrandService(
             IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
             ILogger<BaseDataService<ApplicationDbContext>> logger,
-            ICatalogBrandRepository catalogBrandRepository)
+            ICatalogBrandRepository catalogBrandRepository,
+            IMapper mapper)
             : base(dbContextWrapper, logger)
         {
             _catalogBrandRepository = catalogBrandRepository;
+            _mapper = mapper;
         }
 
         public async Task<PaginatedItems<CatalogBrandDto>> GetByPageAsyncHttpGet(int pageIndex, int pageSize)
@@ -36,5 +44,28 @@ namespace Catalog.Host.Services
                 Data = data
             };
         }
+
+        public Task<int?> Add(AddCatalogBrandRequest addCatalogBrand)
+        {
+            return ExecuteSafeAsync(() => _catalogBrandRepository.Add(addCatalogBrand));
+        }
+
+        public async Task<UpdateCatalogBrandResponse<int>> Update(UpdateCatalogBrandRequest updateCatalogBrand)
+        {
+            return await ExecuteSafeAsync(async () =>
+            {
+                var brand = await _catalogBrandRepository.Update(updateCatalogBrand);
+                return new UpdateCatalogBrandResponse<int>
+                {
+                    Brand = _mapper.Map<CatalogBrandDto>(brand)
+                };
+            });
+        }
+
+        public Task Delete(DeleteCatalogBrandRequest deleteCatalogBrand)
+        {
+            return ExecuteSafeAsync(() => _catalogBrandRepository.Delete(deleteCatalogBrand));
+        }
+
     }
 }

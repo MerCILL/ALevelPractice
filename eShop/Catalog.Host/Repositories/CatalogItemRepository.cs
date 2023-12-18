@@ -1,7 +1,10 @@
 ﻿using Catalog.Host.Data;
 using Catalog.Host.Data.Entities;
 using Catalog.Host.Models.DTOs;
-using Catalog.Host.Models.Requests;
+using Catalog.Host.Models.Requests.AddRequests;
+using Catalog.Host.Models.Requests.DeleteRequests;
+using Catalog.Host.Models.Requests.UpdateRequests;
+using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -100,7 +103,38 @@ namespace Catalog.Host.Repositories
             return item.Entity.Id;
         }
 
-      
+        public async Task<CatalogItem> Update(UpdateCatalogItemRequest itemToUpdate)
+        {
+            var item = await _dbContext.CatalogItems.FindAsync(itemToUpdate.Id);
+            if (item == null)
+            {
+                throw new KeyNotFoundException("Item not found");
+            }
+
+            item.CatalogBrandId = itemToUpdate.CatalogBrandId;
+            item.CatalogTypeId = itemToUpdate.CatalogTypeId;
+            item.Description = itemToUpdate.Description;
+            item.Name = itemToUpdate.Name;
+            item.PictureFileName = itemToUpdate.PictureFileName;
+            item.Price = itemToUpdate.Price;
+
+            await _dbContext.SaveChangesAsync();
+
+            return item;
+        }
+
+        public async Task Delete(DeleteCatalogItemRequest itemToDelete)
+        {
+            var item = await _dbContext.CatalogItems.FindAsync(itemToDelete.Id);
+            if (item == null)
+            {
+                throw new KeyNotFoundException("Item not found");
+            }
+
+            _dbContext.CatalogItems.Remove(item);
+            await _dbContext.SaveChangesAsync();
+        }
+
 
     }
 }

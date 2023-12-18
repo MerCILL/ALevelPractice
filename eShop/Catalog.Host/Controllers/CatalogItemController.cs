@@ -1,7 +1,10 @@
 ﻿using Catalog.Host.Data;
 using Catalog.Host.Data.Entities;
-using Catalog.Host.Models.Requests;
-using Catalog.Host.Models.Responses;
+using Catalog.Host.Models.Requests.AddRequests;
+using Catalog.Host.Models.Requests.DeleteRequests;
+using Catalog.Host.Models.Requests.UpdateRequests;
+using Catalog.Host.Models.Responses.AddResponses;
+using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
 using Infrastructure;
@@ -40,6 +43,29 @@ namespace Catalog.Host.Controllers
         {
             var result = await _catalogItemService.Add(request);
             return Ok(new AddCatalogItemResponse<int?>() { Id = result });
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(UpdateCatalogItemResponse<int>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> UpdateItem(UpdateCatalogItemRequest request)
+        {
+            var result = await _catalogItemService.Update(request);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> DeleteItem(DeleteCatalogItemRequest request)
+        {
+            try
+            {
+                await _catalogItemService.Delete(request);
+                return Ok("Item successfully deleted");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Item not found");
+            }
         }
     }
 }

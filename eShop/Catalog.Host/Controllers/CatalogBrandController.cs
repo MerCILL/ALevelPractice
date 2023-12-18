@@ -1,7 +1,13 @@
-﻿using Catalog.Host.Services;
+﻿using Catalog.Host.Models.Requests.AddRequests;
+using Catalog.Host.Models.Requests.DeleteRequests;
+using Catalog.Host.Models.Requests.UpdateRequests;
+using Catalog.Host.Models.Responses.AddResponses;
+using Catalog.Host.Models.Responses.UpdateResponses;
+using Catalog.Host.Services;
 using Catalog.Host.Services.Interfaces;
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Catalog.Host.Controllers
 {
@@ -25,6 +31,37 @@ namespace Catalog.Host.Controllers
         {
             var result = await _catalogBrandService.GetByPageAsyncHttpGet(pageIndex, pageSize);
             return Ok(result);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(AddCatalogBrandResponse<int?>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> AddBrand(AddCatalogBrandRequest request)
+        {
+            var result = await _catalogBrandService.Add(request);
+            return Ok(new AddCatalogBrandResponse<int?>() { Id = result });
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(UpdateCatalogBrandResponse<int>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> UpdateBrand(UpdateCatalogBrandRequest request)
+        {
+            var result = await _catalogBrandService.Update(request);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> DeleteBrand(DeleteCatalogBrandRequest request)
+        {
+            try
+            {
+                await _catalogBrandService.Delete(request);
+                return Ok("Brand successfully deleted");
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Brand not found");
+            }
         }
 
 

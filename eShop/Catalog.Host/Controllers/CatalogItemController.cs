@@ -16,7 +16,7 @@ using System.Net;
 namespace Catalog.Host.Controllers
 {
     [ApiController]
-    [Route(ComponentDefaults.DefaultRoute)]
+    [Route($"{ComponentDefaults.DefaultRoute}/catalog")]
     public class CatalogItemController : ControllerBase
     {
         private readonly ILogger<CatalogItemController> _logger;
@@ -37,29 +37,29 @@ namespace Catalog.Host.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("items")]
         [ProducesResponseType(typeof(AddCatalogItemResponse<int?>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Add(AddCatalogItemRequest request)
+        public async Task<IActionResult> AddAsync(AddCatalogItemRequest request)
         {
-            var result = await _catalogItemService.Add(request);
+            var result = await _catalogItemService.AddAsync(request);
             return Ok(new AddCatalogItemResponse<int?>() { Id = result });
         }
 
-        [HttpPut]
+        [HttpPut("items")]
         [ProducesResponseType(typeof(UpdateCatalogItemResponse<int>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateItem(UpdateCatalogItemRequest request)
         {
-            var result = await _catalogItemService.Update(request);
+            var result = await _catalogItemService.UpdateAsync(request);
             return Ok(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("items")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteItem(DeleteCatalogItemRequest request)
         {
             try
             {
-                await _catalogItemService.Delete(request);
+                await _catalogItemService.DeleteAsync(request);
                 return Ok("Item successfully deleted");
             }
             catch (KeyNotFoundException)

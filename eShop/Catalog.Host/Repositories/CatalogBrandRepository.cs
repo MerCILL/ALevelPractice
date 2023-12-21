@@ -61,7 +61,7 @@ namespace Catalog.Host.Repositories
             return await _dbContext.CatalogBrands.FindAsync(id);
         }
 
-        public async Task<int?> Add(AddCatalogBrandRequest brandToAdd)
+        public async Task<int?> AddAsync(AddCatalogBrandRequest brandToAdd)
         {
             var brand = await _dbContext.AddAsync(new CatalogBrand
             {
@@ -73,7 +73,7 @@ namespace Catalog.Host.Repositories
             return brand.Entity.Id;
         }
 
-        public async Task<CatalogBrand> Update(UpdateCatalogBrandRequest brandToUpdate)
+        public async Task<CatalogBrand> UpdateAsync(UpdateCatalogBrandRequest brandToUpdate)
         {
             var brand = await _dbContext.CatalogBrands.FindAsync(brandToUpdate.Id);
             if (brand == null)
@@ -88,7 +88,7 @@ namespace Catalog.Host.Repositories
             return brand;
         }
 
-        public async Task Delete(DeleteCatalogBrandRequest brandToDelete)
+        public async Task DeleteAsync(DeleteCatalogBrandRequest brandToDelete)
         {
             var brand = await _dbContext.CatalogBrands.FindAsync(brandToDelete.Id);
             if (brand == null)

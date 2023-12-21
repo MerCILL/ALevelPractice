@@ -12,7 +12,7 @@ using System.Net;
 namespace Catalog.Host.Controllers
 {
     [ApiController]
-    [Route(ComponentDefaults.DefaultRoute)]
+    [Route($"{ComponentDefaults.DefaultRoute}/catalog")]
     public class CatalogBrandController : ControllerBase
     {
         private readonly ILogger<CatalogBrandController> _logger;
@@ -33,29 +33,29 @@ namespace Catalog.Host.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("brands")]
         [ProducesResponseType(typeof(AddCatalogBrandResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> AddBrand(AddCatalogBrandRequest request)
         {
-            var result = await _catalogBrandService.Add(request);
+            var result = await _catalogBrandService.AddAsync(request);
             return Ok(new AddCatalogBrandResponse<int?>() { Id = result });
         }
 
-        [HttpPut]
+        [HttpPut("brands")]
         [ProducesResponseType(typeof(UpdateCatalogBrandResponse<int>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateBrand(UpdateCatalogBrandRequest request)
         {
-            var result = await _catalogBrandService.Update(request);
+            var result = await _catalogBrandService.UpdateAsync(request);
             return Ok(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("brands")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteBrand(DeleteCatalogBrandRequest request)
         {
             try
             {
-                await _catalogBrandService.Delete(request);
+                await _catalogBrandService.DeleteAsync(request);
                 return Ok("Brand successfully deleted");
             }
             catch (KeyNotFoundException)

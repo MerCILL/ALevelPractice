@@ -24,7 +24,7 @@ namespace Catalog.Host.Services
 
         private async Task ExecuteSafeAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
-            await using var transaction = await _dbContextWrapper.BeginTransacrionAsync(cancellationToken);
+            await using var transaction = await _dbContextWrapper.BeginTransactionAsync(cancellationToken);
 
             try
             {
@@ -41,7 +41,7 @@ namespace Catalog.Host.Services
 
         private async Task<TResult> ExecuteSafeAsync<TResult>(Func<CancellationToken,Task<TResult>> action, CancellationToken cancellationToken = default)
         {
-            await using var transaction = await _dbContextWrapper.BeginTransacrionAsync(cancellationToken);
+            await using var transaction = await _dbContextWrapper.BeginTransactionAsync(cancellationToken);
 
             try
             {

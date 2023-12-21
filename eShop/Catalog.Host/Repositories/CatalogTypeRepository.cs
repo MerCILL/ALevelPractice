@@ -61,7 +61,7 @@ namespace Catalog.Host.Repositories
             return await _dbContext.CatalogTypes.FindAsync(id);
         }
 
-        public async Task<int?> Add(AddCatalogTypeRequest typeToAdd)
+        public async Task<int?> AddAsync(AddCatalogTypeRequest typeToAdd)
         {
             var type = await _dbContext.AddAsync(new CatalogType
             {
@@ -73,7 +73,7 @@ namespace Catalog.Host.Repositories
             return type.Entity.Id;
         }
 
-        public async Task<CatalogType> Update(UpdateCatalogTypeRequest typeToUpdate)
+        public async Task<CatalogType> UpdateAsync(UpdateCatalogTypeRequest typeToUpdate)
         {
             var type = await _dbContext.CatalogTypes.FindAsync(typeToUpdate.Id);
             if (type == null)
@@ -88,7 +88,7 @@ namespace Catalog.Host.Repositories
             return type;
         }
 
-        public async Task Delete(DeleteCatalogTypeRequest typeToDelete)
+        public async Task DeleteAsync(DeleteCatalogTypeRequest typeToDelete)
         {
             var type = await _dbContext.CatalogTypes.FindAsync(typeToDelete.Id);
             if (type == null)

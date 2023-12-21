@@ -44,16 +44,16 @@ namespace Catalog.Host.Services
             };
         }
 
-        public Task<int?> Add(AddCatalogTypeRequest addCatalogType)
+        public Task<int?> AddAsync(AddCatalogTypeRequest addCatalogType)
         {
-            return ExecuteSafeAsync(() => _catalogTypeRepository.Add(addCatalogType));
+            return ExecuteSafeAsync(() => _catalogTypeRepository.AddAsync(addCatalogType));
         }
 
-        public async Task<UpdateCatalogTypeResponse<int>> Update(UpdateCatalogTypeRequest updateCatalogType)
+        public async Task<UpdateCatalogTypeResponse<int>> UpdateAsync(UpdateCatalogTypeRequest updateCatalogType)
         {
             return await ExecuteSafeAsync(async () =>
             {
-                var type = await _catalogTypeRepository.Update(updateCatalogType);
+                var type = await _catalogTypeRepository.UpdateAsync(updateCatalogType);
                 return new UpdateCatalogTypeResponse<int>
                 {
                     Type = _mapper.Map<CatalogTypeDto>(type)
@@ -61,9 +61,9 @@ namespace Catalog.Host.Services
             });
         }
 
-        public Task Delete(DeleteCatalogTypeRequest deleteCatalogType)
+        public Task DeleteAsync(DeleteCatalogTypeRequest deleteCatalogType)
         {
-            return ExecuteSafeAsync(() => _catalogTypeRepository.Delete(deleteCatalogType));
+            return ExecuteSafeAsync(() => _catalogTypeRepository.DeleteAsync(deleteCatalogType));
         }
 
     }

@@ -10,8 +10,8 @@ namespace Catalog.Host.Services.Interfaces
     public interface ICatalogItemService
     {
         Task<PaginatedItems<CatalogGetItemDto>> GetByPageAsyncHttpGet(int pageIndex, int pageSize);
-        Task<int?> Add(AddCatalogItemRequest addCatalogItem);
-        Task<UpdateCatalogItemResponse<int>> Update(UpdateCatalogItemRequest updateCatalogItem);
-        Task Delete(DeleteCatalogItemRequest deleteCatalogItem);
+        Task<int?> AddAsync(AddCatalogItemRequest addCatalogItem);
+        Task<UpdateCatalogItemResponse<int>> UpdateAsync(UpdateCatalogItemRequest updateCatalogItem);
+        Task DeleteAsync(DeleteCatalogItemRequest deleteCatalogItem);
     }
 }

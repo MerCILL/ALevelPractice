@@ -9,87 +9,76 @@ using System.Net;
 namespace Catalog.Host.Controllers
 {
     [ApiController]
-    [Route(ComponentDefaults.DefaultRoute)]
+    [Route(ComponentDefaults.DefaultRoute + "/catalog-bff")]
     public class CatalogBffController : ControllerBase
     {
-       private readonly ILogger<CatalogBffController> _logger;
-       private readonly ICatalogBffService _catalogService;
+        private readonly ILogger<CatalogBffController> _logger;
+        private readonly ICatalogBffService _catalogService;
 
         public CatalogBffController(
-            ILogger<CatalogBffController> logger, 
+            ILogger<CatalogBffController> logger,
             ICatalogBffService catalogService)
         {
             _logger = logger;
             _catalogService = catalogService;
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogItemDto>), (int) HttpStatusCode.OK)]
-        public async Task<IActionResult> GetItemsByPageAsync(PaginatedItemsRequest request)
+        [HttpGet("items")]
+        public async Task<IActionResult> GetItemsByPageAsync([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _catalogService.GetCatalogItemsAsync(request.PageIndex, request.PageSize);
+            var result = await _catalogService.GetCatalogItemsAsync(pageIndex, pageSize);
             return Ok(result);
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(CatalogGetItemDto), (int)HttpStatusCode.OK)]
+        [HttpGet("item/{id}")]
         public async Task<IActionResult> GetItemByIdAsync(int id)
         {
             var result = await _catalogService.GetItemByIdAsync(id);
             return Ok(result);
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogGetItemDto>), (int)HttpStatusCode.OK)]
+        [HttpGet("items/brand/{brandId}")]
         public async Task<IActionResult> GetItemsByBrandAsync(int brandId)
         {
             var result = await _catalogService.GetItemsByBrandAsync(brandId);
             return Ok(result);
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogGetItemDto>), (int)HttpStatusCode.OK)]
+        [HttpGet("items/type/{typeId}")]
         public async Task<IActionResult> GetItemsByTypeAsync(int typeId)
         {
             var result = await _catalogService.GetItemsByTypeAsync(typeId);
             return Ok(result);
         }
-        
 
         //Brand
-        [HttpPost]
-        [ProducesResponseType(typeof(CatalogBrandDto), (int)HttpStatusCode.OK)]
+        [HttpGet("brand/{id}")]
         public async Task<IActionResult> GetBrandByIdAsync(int id)
         {
             var result = await _catalogService.GetBrandByIdAsync(id);
             return Ok(result);
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogBrandDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetBrandsByPageAsync(PaginatedItemsRequest request)
+        [HttpGet("brands")]
+        public async Task<IActionResult> GetBrandsByPageAsync([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _catalogService.GetBrandsByPageAsync(request.PageIndex, request.PageSize);
+            var result = await _catalogService.GetBrandsByPageAsync(pageIndex, pageSize);
             return Ok(result);
         }
 
-
         //Type
-        [HttpPost]
-        [ProducesResponseType(typeof(CatalogTypeDto), (int)HttpStatusCode.OK)]
+        [HttpGet("type/{id}")]
         public async Task<IActionResult> GetTypeByIdAsync(int id)
         {
             var result = await _catalogService.GetTypeByIdAsync(id);
             return Ok(result);
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogTypeDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetTypesByPageAsync(PaginatedItemsRequest request)
+        [HttpGet("types")]
+        public async Task<IActionResult> GetTypesByPageAsync([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _catalogService.GetTypesByPageAsync(request.PageIndex, request.PageSize);
+            var result = await _catalogService.GetTypesByPageAsync(pageIndex, pageSize);
             return Ok(result);
         }
-
     }
 }

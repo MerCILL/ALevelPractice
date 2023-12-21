@@ -45,16 +45,16 @@ namespace Catalog.Host.Services
             };
         }
 
-        public Task<int?> Add(AddCatalogBrandRequest addCatalogBrand)
+        public Task<int?> AddAsync(AddCatalogBrandRequest addCatalogBrand)
         {
-            return ExecuteSafeAsync(() => _catalogBrandRepository.Add(addCatalogBrand));
+            return ExecuteSafeAsync(() => _catalogBrandRepository.AddAsync(addCatalogBrand));
         }
 
-        public async Task<UpdateCatalogBrandResponse<int>> Update(UpdateCatalogBrandRequest updateCatalogBrand)
+        public async Task<UpdateCatalogBrandResponse<int>> UpdateAsync(UpdateCatalogBrandRequest updateCatalogBrand)
         {
             return await ExecuteSafeAsync(async () =>
             {
-                var brand = await _catalogBrandRepository.Update(updateCatalogBrand);
+                var brand = await _catalogBrandRepository.UpdateAsync(updateCatalogBrand);
                 return new UpdateCatalogBrandResponse<int>
                 {
                     Brand = _mapper.Map<CatalogBrandDto>(brand)
@@ -62,10 +62,12 @@ namespace Catalog.Host.Services
             });
         }
 
-        public Task Delete(DeleteCatalogBrandRequest deleteCatalogBrand)
+        public Task DeleteAsync(DeleteCatalogBrandRequest deleteCatalogBrand)
         {
-            return ExecuteSafeAsync(() => _catalogBrandRepository.Delete(deleteCatalogBrand));
+            return ExecuteSafeAsync(() => _catalogBrandRepository.DeleteAsync(deleteCatalogBrand));
         }
+
+
 
     }
 }

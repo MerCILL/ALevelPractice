@@ -86,7 +86,7 @@ namespace Catalog.Host.Repositories
                .ToListAsync();
         }
 
-        public async Task<int?> Add(AddCatalogItemRequest itemToAdd)
+        public async Task<int?> AddAsync(AddCatalogItemRequest itemToAdd)
         {
             var item = await _dbContext.AddAsync(new CatalogItem
             {
@@ -103,9 +103,11 @@ namespace Catalog.Host.Repositories
             return item.Entity.Id;
         }
 
-        public async Task<CatalogItem> Update(UpdateCatalogItemRequest itemToUpdate)
+        public async Task<CatalogItem> UpdateAsync(UpdateCatalogItemRequest itemToUpdate)
         {
-            var item = await _dbContext.CatalogItems.FindAsync(itemToUpdate.Id);
+            var item = await _dbContext.CatalogItems.AsNoTracking()
+                .FirstOrDefaultAsync(i => i.Id == itemToUpdate.Id);
+
             if (item == null)
             {
                 throw new KeyNotFoundException("Item not found");
@@ -118,12 +120,18 @@ namespace Catalog.Host.Repositories
             item.PictureFileName = itemToUpdate.PictureFileName;
             item.Price = itemToUpdate.Price;
 
+            _dbContext.CatalogItems.Update(item);
             await _dbContext.SaveChangesAsync();
+
+            item = await _dbContext.CatalogItems
+                .Include(i => i.CatalogBrand)
+                .Include(i => i.CatalogType)
+                .FirstOrDefaultAsync(i => i.Id == itemToUpdate.Id);
 
             return item;
         }
 
-        public async Task Delete(DeleteCatalogItemRequest itemToDelete)
+        public async Task DeleteAsync(DeleteCatalogItemRequest itemToDelete)
         {
             var item = await _dbContext.CatalogItems.FindAsync(itemToDelete.Id);
             if (item == null)
@@ -134,6 +142,8 @@ namespace Catalog.Host.Repositories
             _dbContext.CatalogItems.Remove(item);
             await _dbContext.SaveChangesAsync();
         }
+
+
 
 
     }

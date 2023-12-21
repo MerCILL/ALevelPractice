@@ -12,7 +12,7 @@ using System.Net;
 namespace Catalog.Host.Controllers
 {
     [ApiController]
-    [Route(ComponentDefaults.DefaultRoute)]
+    [Route($"{ComponentDefaults.DefaultRoute}/catalog")]
     public class CatalogTypeController : ControllerBase
     {
         private readonly ILogger<CatalogTypeController> _logger;
@@ -33,29 +33,29 @@ namespace Catalog.Host.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("types")]
         [ProducesResponseType(typeof(AddCatalogTypeResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> AddType(AddCatalogTypeRequest request)
         {
-            var result = await _catalogTypeService.Add(request);
+            var result = await _catalogTypeService.AddAsync(request);
             return Ok(new AddCatalogTypeResponse<int?>() { Id = result });
         }
 
-        [HttpPut]
+        [HttpPut("types")]
         [ProducesResponseType(typeof(UpdateCatalogTypeResponse<int>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> UpdateType(UpdateCatalogTypeRequest request)
         {
-            var result = await _catalogTypeService.Update(request);
+            var result = await _catalogTypeService.UpdateAsync(request);
             return Ok(result);
         }
 
-        [HttpDelete("type")]
+        [HttpDelete("types")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteType(DeleteCatalogTypeRequest request)
         {
             try
             {
-                await _catalogTypeService.Delete(request);
+                await _catalogTypeService.DeleteAsync(request);
                 return Ok("Type successfully deleted");
             }
             catch (KeyNotFoundException)

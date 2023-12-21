@@ -13,8 +13,8 @@ namespace Catalog.Host.Repositories.Interfaces
         Task<CatalogBrand> GetBrandByIdAsync(int id);
 
         Task<PaginatedItems<CatalogBrand>> GetByPageAsyncHttpGet(int pageIndex, int pageSize);
-        Task<int?> Add(AddCatalogBrandRequest brandToAdd);
-        Task<CatalogBrand> Update(UpdateCatalogBrandRequest brandToUpdate);
-        Task Delete(DeleteCatalogBrandRequest brandToDelete);
+        Task<int?> AddAsync(AddCatalogBrandRequest brandToAdd);
+        Task<CatalogBrand> UpdateAsync(UpdateCatalogBrandRequest brandToUpdate);
+        Task DeleteAsync(DeleteCatalogBrandRequest brandToDelete);
     }
 }

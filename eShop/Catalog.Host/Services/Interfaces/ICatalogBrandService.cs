@@ -11,8 +11,8 @@ namespace Catalog.Host.Services.Interfaces
     public interface ICatalogBrandService
     {
         Task<PaginatedItems<CatalogBrandDto>> GetByPageAsyncHttpGet(int pageIndex, int pageSize);
-        Task<int?> Add(AddCatalogBrandRequest addCatalogBrand);
-        Task<UpdateCatalogBrandResponse<int>> Update(UpdateCatalogBrandRequest updateCatalogBrand);
-        Task Delete(DeleteCatalogBrandRequest deleteCatalogBrand);
+        Task<int?> AddAsync(AddCatalogBrandRequest addCatalogBrand);
+        Task<UpdateCatalogBrandResponse<int>> UpdateAsync(UpdateCatalogBrandRequest updateCatalogBrand);
+        Task DeleteAsync(DeleteCatalogBrandRequest deleteCatalogBrand);
     }
 }

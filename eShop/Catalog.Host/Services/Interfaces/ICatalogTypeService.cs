@@ -11,8 +11,8 @@ namespace Catalog.Host.Services.Interfaces
     public interface ICatalogTypeService
     {
         Task<PaginatedItems<CatalogTypeDto>> GetByPageAsyncHttpGet(int pageIndex, int pageSize);
-        Task<int?> Add(AddCatalogTypeRequest addCatalogType);
-        Task<UpdateCatalogTypeResponse<int>> Update(UpdateCatalogTypeRequest updateCatalogType);
-        Task Delete(DeleteCatalogTypeRequest deleteCatalogType);
+        Task<int?> AddAsync(AddCatalogTypeRequest addCatalogType);
+        Task<UpdateCatalogTypeResponse<int>> UpdateAsync(UpdateCatalogTypeRequest updateCatalogType);
+        Task DeleteAsync(DeleteCatalogTypeRequest deleteCatalogType);
     }
 }

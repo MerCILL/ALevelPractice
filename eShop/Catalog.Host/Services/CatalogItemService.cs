@@ -30,34 +30,39 @@ namespace Catalog.Host.Services
         {
             var result = await _catalogItemRepository.GetByPageAsyncHttpGet(pageIndex, pageSize);
 
-            var data = result.Data.Select(item => new CatalogGetItemDto
+            if (result != null)
             {
-                Id = item.Id,
-                Name = item.Name,
-                Description = item.Description,
-                Price = item.Price,
-                PictureUrl = item.PictureFileName,
-                BrandName = item.CatalogBrand.Brand,
-                TypeName = item.CatalogType.Type
-            });
+                var data = result.Data.Select(item => new CatalogGetItemDto
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Description = item.Description,
+                    Price = item.Price,
+                    PictureFileName = item.PictureFileName,
+                    BrandName = item.CatalogBrand.Brand,
+                    TypeName = item.CatalogType.Type
+                });
 
-            return new PaginatedItems<CatalogGetItemDto>
-            {
-                TotalCount = result.TotalCount,
-                Data = data
-            };
+                return new PaginatedItems<CatalogGetItemDto>
+                {
+                    TotalCount = result.TotalCount,
+                    Data = data
+                };
+            }
+
+            return null;
         }
 
-        public Task<int?> Add(AddCatalogItemRequest addCatalogItem)
+        public Task<int?> AddAsync(AddCatalogItemRequest addCatalogItem)
         {
-            return ExecuteSafeAsync(() => _catalogItemRepository.Add(addCatalogItem));
+            return ExecuteSafeAsync(() => _catalogItemRepository.AddAsync(addCatalogItem));
         }
 
-        public async Task<UpdateCatalogItemResponse<int>> Update(UpdateCatalogItemRequest updateCatalogItem)
+        public async Task<UpdateCatalogItemResponse<int>> UpdateAsync(UpdateCatalogItemRequest updateCatalogItem)
         {
             return await ExecuteSafeAsync(async () =>
             {
-                var item = await _catalogItemRepository.Update(updateCatalogItem);
+                var item = await _catalogItemRepository.UpdateAsync(updateCatalogItem);
                 return new UpdateCatalogItemResponse<int>
                 {                  
                     Item = _mapper.Map<CatalogGetItemDto>(item)
@@ -65,9 +70,9 @@ namespace Catalog.Host.Services
             });
         }
 
-        public Task Delete(DeleteCatalogItemRequest deleteCatalogItem)
+        public Task DeleteAsync(DeleteCatalogItemRequest deleteCatalogItem)
         {
-            return ExecuteSafeAsync(() => _catalogItemRepository.Delete(deleteCatalogItem));
+            return ExecuteSafeAsync(() => _catalogItemRepository.DeleteAsync(deleteCatalogItem));
         }
 
 

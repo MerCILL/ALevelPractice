@@ -14,7 +14,7 @@ namespace Catalog.Host.Services
         }
         public T DbContext => _dbContext;
 
-        public Task<IDbContextTransaction> BeginTransacrionAsync(CancellationToken cancellationToken)
+        public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
         {
             return _dbContext.Database.BeginTransactionAsync(cancellationToken);
         }

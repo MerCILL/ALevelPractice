@@ -13,9 +13,9 @@ namespace Catalog.Host.Repositories.Interfaces
         Task<CatalogType> GetTypeByIdAsync(int id);
 
         Task<PaginatedItems<CatalogType>> GetByPageAsyncHttpGet(int pageIndex, int pageSize);
-        Task<int?> Add(AddCatalogTypeRequest typeToAdd);
-        Task<CatalogType> Update(UpdateCatalogTypeRequest typeToUpdate);
-        Task Delete(DeleteCatalogTypeRequest typeToDelete);
+        Task<int?> AddAsync(AddCatalogTypeRequest typeToAdd);
+        Task<CatalogType> UpdateAsync(UpdateCatalogTypeRequest typeToUpdate);
+        Task DeleteAsync(DeleteCatalogTypeRequest typeToDelete);
 
     }
 }

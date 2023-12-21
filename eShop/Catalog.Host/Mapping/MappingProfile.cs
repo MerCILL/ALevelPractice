@@ -9,10 +9,10 @@ namespace Catalog.Host.Mapping
         public MappingProfile()
         {
             CreateMap<CatalogItem, CatalogItemDto>()
-                .ForMember("PictureUrl", opt
+                .ForMember("PictureFileName", opt
                     => opt.MapFrom<CatalogItemPictureResolver, string>(c => c.PictureFileName));
             CreateMap<CatalogItem, CatalogGetItemDto>()
-                .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom<CatalogGetItemPictureResolver, string>(src => src.PictureFileName))
+                .ForMember(dest => dest.PictureFileName, opt => opt.MapFrom<CatalogGetItemPictureResolver, string>(src => src.PictureFileName))
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.CatalogBrand.Brand))
                 .ForMember(dest => dest.TypeName, opt => opt.MapFrom(src => src.CatalogType.Type));
 

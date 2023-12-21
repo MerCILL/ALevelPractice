@@ -41,21 +41,21 @@ namespace Catalog.Host.Controllers
             return Ok(new AddCatalogTypeResponse<int?>() { Id = result });
         }
 
-        [HttpPut("types")]
+        [HttpPut("types/{id}")]
         [ProducesResponseType(typeof(UpdateCatalogTypeResponse<int>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> UpdateType(UpdateCatalogTypeRequest request)
+        public async Task<IActionResult> UpdateType(int id, UpdateCatalogTypeRequest request)
         {
             var result = await _catalogTypeService.UpdateAsync(request);
             return Ok(result);
         }
 
-        [HttpDelete("types")]
+        [HttpDelete("types/{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> DeleteType(DeleteCatalogTypeRequest request)
+        public async Task<IActionResult> DeleteType(int id)
         {
             try
             {
-                await _catalogTypeService.DeleteAsync(request);
+                await _catalogTypeService.DeleteAsync(new DeleteCatalogTypeRequest() { Id = id });
                 return Ok("Type successfully deleted");
             }
             catch (KeyNotFoundException)

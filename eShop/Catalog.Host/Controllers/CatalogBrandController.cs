@@ -41,21 +41,21 @@ namespace Catalog.Host.Controllers
             return Ok(new AddCatalogBrandResponse<int?>() { Id = result });
         }
 
-        [HttpPut("brands")]
+        [HttpPut("brands/{id}")]
         [ProducesResponseType(typeof(UpdateCatalogBrandResponse<int>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> UpdateBrand(UpdateCatalogBrandRequest request)
+        public async Task<IActionResult> UpdateBrand(int id, UpdateCatalogBrandRequest request)
         {
             var result = await _catalogBrandService.UpdateAsync(request);
             return Ok(result);
         }
 
-        [HttpDelete("brands")]
+        [HttpDelete("brands/{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> DeleteBrand(DeleteCatalogBrandRequest request)
+        public async Task<IActionResult> DeleteBrand(int id)
         {
             try
             {
-                await _catalogBrandService.DeleteAsync(request);
+                await _catalogBrandService.DeleteAsync(new DeleteCatalogBrandRequest { Id = id });
                 return Ok("Brand successfully deleted");
             }
             catch (KeyNotFoundException)

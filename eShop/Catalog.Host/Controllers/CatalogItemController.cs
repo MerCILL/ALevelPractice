@@ -45,21 +45,21 @@ namespace Catalog.Host.Controllers
             return Ok(new AddCatalogItemResponse<int?>() { Id = result });
         }
 
-        [HttpPut("items")]
+        [HttpPut("items/{id}")]
         [ProducesResponseType(typeof(UpdateCatalogItemResponse<int>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> UpdateItem(UpdateCatalogItemRequest request)
+        public async Task<IActionResult> UpdateItem(int id, UpdateCatalogItemRequest request)
         {
             var result = await _catalogItemService.UpdateAsync(request);
             return Ok(result);
         }
 
-        [HttpDelete("items")]
+        [HttpDelete("items/{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> DeleteItem(DeleteCatalogItemRequest request)
+        public async Task<IActionResult> DeleteItem(int id)
         {
             try
             {
-                await _catalogItemService.DeleteAsync(request);
+                await _catalogItemService.DeleteAsync(new DeleteCatalogItemRequest() { Id = id });
                 return Ok("Item successfully deleted");
             }
             catch (KeyNotFoundException)
@@ -67,5 +67,7 @@ namespace Catalog.Host.Controllers
                 return NotFound("Item not found");
             }
         }
+
+
     }
 }

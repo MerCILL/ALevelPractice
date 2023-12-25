@@ -16,9 +16,40 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{5D3102EA-2AAB-40DC-86FD-3530678EF86C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.UnitTests", "Catalog.UnitTests\Catalog.UnitTests.csproj", "{614FD28A-487C-4A54-B747-A8C520D6A92F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.UnitTests", "Catalog.UnitTests\Catalog.UnitTests.csproj", "{614FD28A-487C-4A54-B747-A8C520D6A92F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.UnitTests", "Infrastructure.UnitTests\Infrastructure.UnitTests.csproj", "{9644F547-3EC3-46B8-800A-F711C6C4227D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.UnitTests", "Infrastructure.UnitTests\Infrastructure.UnitTests.csproj", "{9644F547-3EC3-46B8-800A-F711C6C4227D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proxy", "Proxy", "{7FD49F21-B79E-4A73-99F0-260E0AEEC890}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{58BDCF70-0822-446B-B979-57DEDB81BB19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{BA76270B-5E65-44EE-9FA2-3C94B34358AC}"
+	ProjectSection(SolutionItems) = preProject
+		Proxy\assets\images\1.png = Proxy\assets\images\1.png
+		Proxy\assets\images\10.png = Proxy\assets\images\10.png
+		Proxy\assets\images\11.png = Proxy\assets\images\11.png
+		Proxy\assets\images\12.png = Proxy\assets\images\12.png
+		Proxy\assets\images\13.png = Proxy\assets\images\13.png
+		Proxy\assets\images\14.png = Proxy\assets\images\14.png
+		Proxy\assets\images\2.png = Proxy\assets\images\2.png
+		Proxy\assets\images\3.png = Proxy\assets\images\3.png
+		Proxy\assets\images\4.png = Proxy\assets\images\4.png
+		Proxy\assets\images\5.png = Proxy\assets\images\5.png
+		Proxy\assets\images\6.png = Proxy\assets\images\6.png
+		Proxy\assets\images\7.png = Proxy\assets\images\7.png
+		Proxy\assets\images\8.png = Proxy\assets\images\8.png
+		Proxy\assets\images\9.png = Proxy\assets\images\9.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gateway", "gateway", "{FFACDF1C-DE12-42AA-84A1-4506672A56EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{D334E4C8-1D3C-4B9D-880C-EE4430DEDA46}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "conf.d", "conf.d", "{67736307-E40E-437A-BA1C-9617B6F48BE4}"
+	ProjectSection(SolutionItems) = preProject
+		default.conf = default.conf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +82,11 @@ Global
 		{5D3102EA-2AAB-40DC-86FD-3530678EF86C} = {8CB462EB-DCC6-480D-9A1D-90D3256E1323}
 		{614FD28A-487C-4A54-B747-A8C520D6A92F} = {12B7E52B-D4C5-48D7-A0C1-E147F73B7C5F}
 		{9644F547-3EC3-46B8-800A-F711C6C4227D} = {8CB462EB-DCC6-480D-9A1D-90D3256E1323}
+		{58BDCF70-0822-446B-B979-57DEDB81BB19} = {7FD49F21-B79E-4A73-99F0-260E0AEEC890}
+		{BA76270B-5E65-44EE-9FA2-3C94B34358AC} = {58BDCF70-0822-446B-B979-57DEDB81BB19}
+		{FFACDF1C-DE12-42AA-84A1-4506672A56EE} = {7FD49F21-B79E-4A73-99F0-260E0AEEC890}
+		{D334E4C8-1D3C-4B9D-880C-EE4430DEDA46} = {FFACDF1C-DE12-42AA-84A1-4506672A56EE}
+		{67736307-E40E-437A-BA1C-9617B6F48BE4} = {D334E4C8-1D3C-4B9D-880C-EE4430DEDA46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23B9F5FF-8A9E-4E73-87A8-33AFFE3F2B65}

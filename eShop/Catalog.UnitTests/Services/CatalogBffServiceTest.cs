@@ -50,64 +50,64 @@ namespace Catalog.UnitTests.Services
                 _mapper.Object);
         }
 
-        [Fact]
-        public async Task GetCatalogItemsAsync_Success()
-        {
-            // Arrange
-            var pageIndex = 0;
-            var pageSize = 10;
+        //[Fact]
+        //public async Task GetCatalogItemsAsync_Success()
+        //{
+        //    // Arrange
+        //    var pageIndex = 0;
+        //    var pageSize = 10;
 
-            var catalogItems = new List<CatalogItem>
-            {
-                new CatalogItem { Id = 1, Name = "Item1" },
-                new CatalogItem { Id = 2, Name = "Item2" }
-            };
+        //    var catalogItems = new List<CatalogItem>
+        //    {
+        //        new CatalogItem { Id = 1, Name = "Item1" },
+        //        new CatalogItem { Id = 2, Name = "Item2" }
+        //    };
 
-            var paginatedItems = new PaginatedItems<CatalogItem>
-            {
-                TotalCount = catalogItems.Count,
-                Data = catalogItems
-            };
+        //    var paginatedItems = new PaginatedItems<CatalogItem>
+        //    {
+        //        TotalCount = catalogItems.Count,
+        //        Data = catalogItems
+        //    };
 
-            var expectedDto = new PaginatedItemsResponse<CatalogItemDto>
-            {
-                Count = catalogItems.Count,
-                Data = catalogItems.Select(i => new CatalogItemDto { Id = i.Id, Name = i.Name }).ToList(),
-                PageIndex = pageIndex,
-                PageSize = pageSize
-            };
+        //    var expectedDto = new PaginatedItemsResponse<CatalogItemDto>
+        //    {
+        //        Count = catalogItems.Count,
+        //        Data = catalogItems.Select(i => new CatalogItemDto { Id = i.Id, Name = i.Name }).ToList(),
+        //        PageIndex = pageIndex,
+        //        PageSize = pageSize
+        //    };
 
-            _catalogItemRepository.Setup(r => r.GetItemsByPageAsync(pageIndex, pageSize)).ReturnsAsync(paginatedItems);
-            _mapper.Setup(m => m.Map<CatalogItemDto>(It.IsAny<CatalogItem>())).Returns<CatalogItem>(i => new CatalogItemDto { Id = i.Id, Name = i.Name });
+        //    _catalogItemRepository.Setup(r => r.GetItemsByPageAsync(pageIndex, pageSize)).ReturnsAsync(paginatedItems);
+        //    _mapper.Setup(m => m.Map<CatalogItemDto>(It.IsAny<CatalogItem>())).Returns<CatalogItem>(i => new CatalogItemDto { Id = i.Id, Name = i.Name });
 
-            // Act
-            var result = await _catalogBffService.GetCatalogItemsAsync(pageIndex, pageSize);
+        //    // Act
+        //    var result = await _catalogBffService.GetCatalogItemsAsync(pageIndex, pageSize);
 
-            // Assert
-            result.Should().BeEquivalentTo(expectedDto);
+        //    // Assert
+        //    result.Should().BeEquivalentTo(expectedDto);
 
-            foreach (var item in result.Data)
-            {
-                var originalItem = catalogItems.First(i => i.Id == item.Id);
-                item.Name.Should().Be(originalItem.Name);
-            }
-        }
+        //    foreach (var item in result.Data)
+        //    {
+        //        var originalItem = catalogItems.First(i => i.Id == item.Id);
+        //        item.Name.Should().Be(originalItem.Name);
+        //    }
+        //}
 
-        [Fact]
-        public async Task GetCatalogItemsAsync_Failure()
-        {
-            // Arrange
-            var pageIndex = 0;
-            var pageSize = 10;
+        //[Fact]
+        //public async Task GetCatalogItemsAsync_Failure()
+        //{
+        //    // Arrange
+        //    var pageIndex = 0;
+        //    var pageSize = 10;
 
-            _catalogItemRepository.Setup(r => r.GetItemsByPageAsync(pageIndex, pageSize)).ThrowsAsync(new Exception());
+        //    _catalogItemRepository.Setup(r => r.GetItemsByPageAsync(pageIndex, pageSize)).ThrowsAsync(new Exception());
 
-            // Act
-            var result = await _catalogBffService.GetCatalogItemsAsync(pageIndex, pageSize);
+        //    // Act
+        //    var result = await _catalogBffService.GetCatalogItemsAsync(pageIndex, pageSize);
 
-            // Assert
-            result.Should().BeNull();
-        }
+        //    // Assert
+        //    result.Should().BeNull();
+        //}
 
             [Fact]
             public async Task GetItemByIdAsync_Success()

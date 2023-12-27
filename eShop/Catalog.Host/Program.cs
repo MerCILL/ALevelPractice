@@ -29,6 +29,17 @@ builder.Services.Configure<CatalogConfig>(configuration);
 builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseNpgsql(configuration["ConnectionString"]));
 builder.Services.AddScoped<IDbContextWrapper<ApplicationDbContext>, DbContextWrapper<ApplicationDbContext>>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "CorsPolicy",
+        builder => builder
+            .SetIsOriginAllowed((host) => true)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
 var app = builder.Build();
 
 
@@ -36,6 +47,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("CorsPolicy");
 }
 
 app.UseHttpsRedirection();

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Catalog.Host.Data;
 using Catalog.Host.Models.DTOs;
+using Catalog.Host.Models.Enums;
+using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Responses;
 using Catalog.Host.Repositories;
 using Catalog.Host.Repositories.Interfaces;
@@ -31,17 +33,17 @@ namespace Catalog.Host.Services
         }
 
         //Items
-        public async Task<PaginatedItemsResponse<CatalogItemDto>> GetCatalogItemsAsync(int pageIndex, int pageSize)
+        public async Task<PaginatedItemsResponse<CatalogGetItemDto>> GetCatalogItemsAsync(PaginatedItemsRequest request)
         {
             return await ExecuteSafeAsync(async () =>
             {
-                var result = await _catalogItemRepository.GetItemsByPageAsync(pageIndex, pageSize);
-                return new PaginatedItemsResponse<CatalogItemDto>()
+                var result = await _catalogItemRepository.GetItemsByPageAsync(request);
+                return new PaginatedItemsResponse<CatalogGetItemDto>()
                 {
                     Count = result.TotalCount,
-                    Data = result.Data.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList(),
-                    PageIndex = pageIndex,
-                    PageSize = pageSize
+                    Data = result.Data.Select(s => _mapper.Map<CatalogGetItemDto>(s)).ToList(),
+                    PageIndex = request.PageIndex,
+                    PageSize = request.PageSize
                 };
             });
         }

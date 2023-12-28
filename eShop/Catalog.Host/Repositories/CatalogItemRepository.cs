@@ -1,6 +1,8 @@
 ﻿using Catalog.Host.Data;
 using Catalog.Host.Data.Entities;
 using Catalog.Host.Models.DTOs;
+using Catalog.Host.Models.Enums;
+using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Requests.AddRequests;
 using Catalog.Host.Models.Requests.DeleteRequests;
 using Catalog.Host.Models.Requests.UpdateRequests;
@@ -46,14 +48,32 @@ namespace Catalog.Host.Repositories
             };
         }
 
-        public async Task<PaginatedItems<CatalogItem>> GetItemsByPageAsync(int pageIndex, int pageSize)
+        public async Task<PaginatedItems<CatalogItem>> GetItemsByPageAsync(PaginatedItemsRequest request)
         {
-            var totalItems = await _dbContext.CatalogItems.LongCountAsync();
+            request.PageIndex = request.PageIndex <= 0 ? 1 : request.PageIndex;
+            request.PageSize = request.PageSize <= 0 ? 10 : request.PageSize;
 
-            var catalogItems = await _dbContext.CatalogItems
+            var query = _dbContext.CatalogItems
+                .Include(item => item.CatalogBrand)
+                .Include(item => item.CatalogType)
+                .AsQueryable();
+
+            if (request.BrandIds != null && request.BrandIds.Any() && request.BrandIds.All(id => id > 0))
+            {
+                query = query.Where(item => request.BrandIds.Contains(item.CatalogBrandId));
+            }
+
+            if (request.TypeIds != null && request.TypeIds.Any() && request.TypeIds.All(id => id > 0))
+            {
+                query = query.Where(item => request.TypeIds.Contains(item.CatalogTypeId));
+            }
+
+            var totalItems = await query.LongCountAsync();
+
+            var catalogItems = await query
                 .OrderBy(c => c.Name)
-                .Skip(pageSize * pageIndex)
-                .Take(pageSize)
+                .Skip(request.PageSize * (request.PageIndex - 1))
+                .Take(request.PageSize)
                 .ToListAsync();
 
             return new PaginatedItems<CatalogItem>

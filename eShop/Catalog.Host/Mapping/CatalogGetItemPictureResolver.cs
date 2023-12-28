@@ -17,7 +17,8 @@ namespace Catalog.Host.Mapping
 
         public string Resolve(CatalogItem source, CatalogGetItemDto destination, string sourceMember, string destMember, ResolutionContext context)
         {
-            return $"{_config.Host}/{_config.ImgUrl}/{sourceMember}";
+            //return $"{_config.Host}/{_config.ImgUrl}/{sourceMember}";
+            return $"/{_config.ImgUrl}/{sourceMember}";
         }
     }
 }

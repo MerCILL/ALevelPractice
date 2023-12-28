@@ -11,46 +11,21 @@ namespace MVC.Controllers
         {
             _catalogService = catalogService;
         }
-        public async Task<IActionResult> Index(int? brandFilterApplied, int? typesFilterApplied, int? page, int? itemsPage)
+
+        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 3)
         {
-            page ??= 1; 
-            itemsPage ??= 6; 
-
-            var request = new PaginatedItemsRequest
-            {
-                PageIndex = page.Value,
-                PageSize = itemsPage.Value,
-                BrandId = brandFilterApplied,
-                TypeId = typesFilterApplied
-            };
-
-            var catalog = await _catalogService.GetCatalogItemsAsync(request);
-        
-            if (catalog == null || catalog.Data.Count == 0)
-            {
-                return View("Error");
-            }
-
-            var info = new PaginationInfo()
-            {
-                ActualPage = page.Value,
-                ItemsPerPage = catalog.Data.Count,
-                TotalItems = catalog.Count,
-                TotalPages = (int)Math.Ceiling((decimal)catalog.Count / itemsPage.Value)
-            };
-
-            var vm = new IndexViewModel()
-            {
-                CatalogItems = catalog.Data,
-                Brands = await _catalogService.GetBrandsAsync(),
-                Types = await _catalogService.GetTypesAsync(),
-                PaginationInfo = info
-            };
-
-            vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
-            vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
-
-            return View(vm);
+            var items = await _catalogService.GetCatalogItemsAsync2(pageIndex, pageSize);
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)items.Count / pageSize);
+            return View(items.Data);
         }
+
+        public async Task<IActionResult> CatalogItems(int pageIndex = 1, int pageSize = 3)
+        {
+            var items = await _catalogService.GetCatalogItemsAsync2(pageIndex, pageSize);
+            return PartialView("_CatalogItems", items);
+        }
+
     }
 }

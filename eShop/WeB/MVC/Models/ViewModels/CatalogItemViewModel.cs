@@ -1,4 +1,4 @@
-﻿namespace MVC.Models
+﻿namespace MVC.Models.ViewModels
 {
     public class CatalogItemViewModel
     {
@@ -6,6 +6,8 @@
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string PictureFileName { get; set; }
+        public string BrandName { get; set; }
+        public string TypeName { get; set; }
 
         public string PictureUrl
         {

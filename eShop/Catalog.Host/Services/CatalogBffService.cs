@@ -33,15 +33,15 @@ namespace Catalog.Host.Services
         }
 
         //Items
-        public async Task<PaginatedItemsResponse<CatalogItemDto>> GetCatalogItemsAsync(PaginatedItemsRequest request)
+        public async Task<PaginatedItemsResponse<CatalogGetItemDto>> GetCatalogItemsAsync(PaginatedItemsRequest request)
         {
             return await ExecuteSafeAsync(async () =>
             {
                 var result = await _catalogItemRepository.GetItemsByPageAsync(request);
-                return new PaginatedItemsResponse<CatalogItemDto>()
+                return new PaginatedItemsResponse<CatalogGetItemDto>()
                 {
                     Count = result.TotalCount,
-                    Data = result.Data.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList(),
+                    Data = result.Data.Select(s => _mapper.Map<CatalogGetItemDto>(s)).ToList(),
                     PageIndex = request.PageIndex,
                     PageSize = request.PageSize
                 };

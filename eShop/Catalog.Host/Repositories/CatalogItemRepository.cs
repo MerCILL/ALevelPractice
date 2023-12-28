@@ -50,16 +50,22 @@ namespace Catalog.Host.Repositories
 
         public async Task<PaginatedItems<CatalogItem>> GetItemsByPageAsync(PaginatedItemsRequest request)
         {
-            var query = _dbContext.CatalogItems.AsQueryable();
+            request.PageIndex = request.PageIndex <= 0 ? 1 : request.PageIndex;
+            request.PageSize = request.PageSize <= 0 ? 10 : request.PageSize;
 
-            if (request.BrandId.HasValue)
+            var query = _dbContext.CatalogItems
+                .Include(item => item.CatalogBrand)
+                .Include(item => item.CatalogType)
+                .AsQueryable();
+
+            if (request.BrandIds != null && request.BrandIds.Any() && request.BrandIds.All(id => id > 0))
             {
-                query = query.Where(item => item.CatalogBrandId == request.BrandId.Value);
+                query = query.Where(item => request.BrandIds.Contains(item.CatalogBrandId));
             }
 
-            if (request.TypeId.HasValue)
+            if (request.TypeIds != null && request.TypeIds.Any() && request.TypeIds.All(id => id > 0))
             {
-                query = query.Where(item => item.CatalogTypeId == request.TypeId.Value);
+                query = query.Where(item => request.TypeIds.Contains(item.CatalogTypeId));
             }
 
             var totalItems = await query.LongCountAsync();

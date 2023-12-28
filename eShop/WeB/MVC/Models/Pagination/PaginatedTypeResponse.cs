@@ -1,10 +1,10 @@
-﻿namespace MVC.Models
+﻿namespace MVC.Models.Pagination
 {
-    public class Brand
+    public class PaginatedTypeResponse
     {
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public long Count { get; set; }
-        public IEnumerable<CatalogBrand> Data { get; set; }
+        public IEnumerable<CatalogType> Data { get; set; }
     }
 }

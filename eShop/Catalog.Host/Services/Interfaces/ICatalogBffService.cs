@@ -8,7 +8,7 @@ namespace Catalog.Host.Services.Interfaces
 {
     public interface ICatalogBffService
     {
-        Task<PaginatedItemsResponse<CatalogItemDto>> GetCatalogItemsAsync(PaginatedItemsRequest request);
+        Task<PaginatedItemsResponse<CatalogGetItemDto>> GetCatalogItemsAsync(PaginatedItemsRequest request);
         Task<CatalogGetItemDto> GetItemByIdAsync(int id);
         Task<PaginatedItemsResponse<CatalogGetItemDto>> GetItemsByBrandAsync(int brandId);
         Task<PaginatedItemsResponse<CatalogGetItemDto>> GetItemsByTypeAsync(int typeId);

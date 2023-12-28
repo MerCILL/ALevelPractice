@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using MVC.Models;
+using MVC.Models.Pagination;
+using MVC.Models.ViewModels;
 
 namespace MVC.Services.Interfaces
 {
     public interface ICatalogService
     {
-        Task<Catalog> GetCatalogItemsAsync(PaginatedItemsRequest request);
         Task<IEnumerable<SelectListItem>> GetBrandsAsync();
         Task<IEnumerable<SelectListItem>> GetTypesAsync();
-        Task<PaginatedItemsResponse<CatalogItemViewModel>> GetCatalogItemsAsync2(int pageIndex = 1, int pageSize = 6);
+        Task<PaginatedItemsResponse<CatalogItemViewModel>> GetCatalogItemsAsync(PaginatedItemsRequest request);
 
     }
 }

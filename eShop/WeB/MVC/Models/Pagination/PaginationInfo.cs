@@ -1,4 +1,4 @@
-﻿namespace MVC.Models
+﻿namespace MVC.Models.Pagination
 {
     public class PaginationInfo
     {

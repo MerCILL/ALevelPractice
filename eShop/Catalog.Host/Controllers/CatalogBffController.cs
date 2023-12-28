@@ -29,8 +29,8 @@ namespace Catalog.Host.Controllers
             _config = config;
         }
 
-        [HttpGet("items")]
-        public async Task<IActionResult> GetItemsByPageAsync([FromQuery] PaginatedItemsRequest request)
+        [HttpPost("items")]
+        public async Task<IActionResult> GetItemsByPageAsync([FromBody] PaginatedItemsRequest request)
         {
             var result = await _catalogService.GetCatalogItemsAsync(request);
             return Ok(result);

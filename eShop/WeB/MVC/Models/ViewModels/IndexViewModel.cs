@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using MVC.Models.Pagination;
 
-namespace MVC.Models
+namespace MVC.Models.ViewModels
 {
     public class IndexViewModel
     {

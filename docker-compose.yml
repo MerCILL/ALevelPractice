@@ -10,9 +10,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5003
       - Authorization__Authority=http://localhost:5002
-      - Redis__Host=localhost:6380
+      - Redis__Host=redis:6379
       - Redis__CacheTimeout=00:00:10
-      - PathBase=http://localhost.com:5003
+      - PathBase=http://localhost:5003
     depends_on:
       - redis
     ports:

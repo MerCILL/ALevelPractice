@@ -22,6 +22,8 @@ public class BasketBffController : ControllerBase
     }
     
     [HttpPost]
+    [RateLimit]
+    [AllowAnonymous]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> TestAdd(TestAddRequest data)
     {
@@ -31,6 +33,8 @@ public class BasketBffController : ControllerBase
     }
 
     [HttpPost]
+    [RateLimit]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(TestGetResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> TestGet()
     {

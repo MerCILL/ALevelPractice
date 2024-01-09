@@ -3,7 +3,10 @@ using Basket.Host.Services;
 using Basket.Host.Services.Interfaces;
 using Infrastructure.Extensions;
 using Infrastructure.Filters;
+using Infrastructure.RateLimit;
+using Infrastructure.RateLimit.Interfaces;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 var configuration = GetConfiguration();
 
@@ -56,15 +59,19 @@ builder.Services.AddTransient<IRedisCacheConnectionService, RedisCacheConnection
 builder.Services.AddTransient<ICacheService, CacheService>();
 builder.Services.AddTransient<IBasketService, BasketService>();
 
+builder.Services.AddScoped<IRateLimitFilter, RateLimitFilter>();
+
+var redis = ConnectionMultiplexer.Connect("redis:6379"); 
+builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         "CorsPolicy",
         builder => builder
-            .SetIsOriginAllowed((host) => true)
+            .AllowAnyOrigin()
             .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
+            .AllowAnyHeader());
 });
 
 var app = builder.Build();

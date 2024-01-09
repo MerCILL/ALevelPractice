@@ -7,7 +7,9 @@ using Catalog.Host.Services;
 using Catalog.Host.Services.Interfaces;
 using Infrastructure.Extensions;
 using Infrastructure.Filters;
+using Infrastructure.RateLimit;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 var configuration = GetConfiguration();
 
@@ -58,12 +60,18 @@ builder.Services.AddAuthorization(configuration);
 
 builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.Configure<RedisConfig>(
+    builder.Configuration.GetSection("Redis"));
+
 builder.Services.AddTransient<ICatalogItemRepository, CatalogItemRepository>();
 builder.Services.AddTransient<ICatalogService, CatalogService>();
 builder.Services.AddTransient<ICatalogItemService, CatalogItemService>();
 
 builder.Services.AddDbContextFactory<ApplicationDbContext>(opts => opts.UseNpgsql(configuration["ConnectionString"]));
 builder.Services.AddScoped<IDbContextWrapper<ApplicationDbContext>, DbContextWrapper<ApplicationDbContext>>();
+
+var redis = ConnectionMultiplexer.Connect("redis:6379");
+builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
 
 builder.Services.AddCors(options =>
 {
@@ -77,6 +85,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<RateLimitMiddleware>();
 
 app.UseSwagger()
     .UseSwaggerUI(setup =>

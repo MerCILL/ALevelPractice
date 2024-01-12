@@ -42,7 +42,7 @@ public class CatalogTypeController : ControllerBase
         try
         {
             var updatedCatalogType = await _catalogTypeService.Update(new CatalogType { Id = id, Type = request.TypeName });
-            return Ok($"Type with id {updatedCatalogType.Id} successfully updated: {updatedCatalogType.Type}");
+            return Ok(new { message = $"Type with id {updatedCatalogType.Id} successfully updated", updatedCatalogType });
         }
         catch (ArgumentException ex)
         {

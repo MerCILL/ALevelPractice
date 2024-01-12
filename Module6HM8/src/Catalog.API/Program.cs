@@ -15,6 +15,8 @@ builder.Services.AddScoped<CatalogDbContextSeed>();
 
 builder.Services.AddScoped<ICatalogTypeRepository, CatalogTypeRepository>();
 builder.Services.AddScoped<ICatalogTypeService, CatalogTypeService>();
+builder.Services.AddScoped<ICatalogBrandRepository, CatalogBrandRepository>();
+builder.Services.AddScoped<ICatalogBrandService, CatalogBrandService>();
 
 var app = builder.Build();
 
@@ -31,25 +33,24 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-InitializeDatabase(app);
+await InitializeDatabase(app);
 
 app.Run();
 
-async void InitializeDatabase(WebApplication app)
+async Task InitializeDatabase(IApplicationBuilder app)
 {
-    using (var scope = app.Services.CreateScope())
+    using var scope = app.ApplicationServices.CreateScope();
+    var services = scope.ServiceProvider;
+
+    try
     {
-        var services = scope.ServiceProvider;
-        try
-        {
-            var catalogContext = services.GetRequiredService<CatalogDbContext>();
-            var catalogContextSeed = services.GetRequiredService<CatalogDbContextSeed>();
-            await catalogContextSeed.SeedAsync(catalogContext);
-        }
-        catch (Exception ex)
-        {
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "An error occurred seeding the DB.");
-        }
+        var dbContextSeed = services.GetRequiredService<CatalogDbContextSeed>();
+        var catalogDbContext = services.GetRequiredService<CatalogDbContext>();
+        await dbContextSeed.SeedAsync(catalogDbContext);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
     }
 }

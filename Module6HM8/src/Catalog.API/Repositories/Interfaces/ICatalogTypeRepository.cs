@@ -2,7 +2,7 @@
 
 public interface ICatalogTypeRepository
 {
-    Task<IEnumerable<Data.Entities.CatalogType>> Get();
+    Task<IEnumerable<CatalogType>> Get();
     Task<int> Add(CatalogType catalogType);
     Task Update(CatalogType catalogType);
     Task Delete(int id);

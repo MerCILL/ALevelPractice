@@ -55,7 +55,7 @@ public class CatalogTypeService : ICatalogTypeService
         var existingCatalogType = await _catalogTypeRepository.GetById(catalogType.Id);
         if (existingCatalogType == null)
         {
-            throw new ArgumentException($"CatalogType with id {catalogType.Id} does not exist.");
+            throw new ArgumentException($"Type with id {catalogType.Id} does not exist.");
         }
 
         await _catalogTypeRepository.Update(catalogType);
@@ -72,7 +72,7 @@ public class CatalogTypeService : ICatalogTypeService
         var existingCatalogType = await _catalogTypeRepository.GetById(id);
         if (existingCatalogType == null)
         {
-            throw new ArgumentException($"CatalogType with id {id} does not exist.");
+            throw new ArgumentException($"Type with id {id} does not exist.");
         }
 
         await _catalogTypeRepository.Delete(id);

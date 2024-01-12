@@ -48,7 +48,7 @@ public class CatalogTypeRepository : ICatalogTypeRepository
 
     public async Task<CatalogType> GetByName(string typeName)
     {
-        return await _dbContext.CatalogTypes.FirstOrDefaultAsync(t => t.Type == typeName);
+        return await _dbContext.CatalogTypes.FirstOrDefaultAsync(type => type.Type == typeName);
     }
 
     public async Task<CatalogType> GetById(int id)

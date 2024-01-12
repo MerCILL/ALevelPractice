@@ -1,8 +1,8 @@
 ﻿namespace Catalog.API.Data.EntityConfigurations;
 
-public class CatalogTypeEntityConfiguration : IEntityTypeConfiguration<CatalogType>
+public class CatalogTypeEntityConfiguration : IEntityTypeConfiguration<Entities.CatalogType>
 {
-    public void Configure(EntityTypeBuilder<CatalogType> builder)
+    public void Configure(EntityTypeBuilder<Entities.CatalogType> builder)
     {
         builder.ToTable("CatalogType");
 

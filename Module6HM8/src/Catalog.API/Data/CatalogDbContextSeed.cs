@@ -20,8 +20,8 @@ public class CatalogDbContextSeed
             _logger.LogInformation($"Seeded catalog with {context.CatalogBrands.Count()} brands");
 
             context.CatalogTypes.AddRange(
-                new CatalogType { Id = 1, Type = "Type 1" },
-                new CatalogType { Id = 2, Type = "Type 2" }
+                new Entities.CatalogType { Id = 1, Type = "Type 1" },
+                new Entities.CatalogType { Id = 2, Type = "Type 2" }
             );
             _logger.LogInformation($"Seeded catalog with {context.CatalogTypes.Count()} types");
 

@@ -46,6 +46,7 @@ namespace Catalog.API.Migrations
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    PictureUri = table.Column<string>(type: "text", nullable: false),
                     CatalogTypeId = table.Column<int>(type: "integer", nullable: false),
                     CatalogBrandId = table.Column<int>(type: "integer", nullable: false),
                     AvailableStock = table.Column<int>(type: "integer", nullable: false)

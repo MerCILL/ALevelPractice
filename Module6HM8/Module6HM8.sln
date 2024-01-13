@@ -13,6 +13,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.UnitTests", "tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.API", "src\Identity.API\Identity.API.csproj", "{EA929CAD-4D48-42BC-A8AC-ABB75C68134C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AD0994C3-62C0-4E31-9EF7-2BC7455BF897}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proxy", "proxy", "{79BDE00B-2919-49DB-9E13-F6CC74AB4C7E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{0C9B955D-0134-4DFF-A168-A6A8D90C7989}"
+	ProjectSection(SolutionItems) = preProject
+		proxy\nginx\default.conf = proxy\nginx\default.conf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +51,7 @@ Global
 		{24694B6F-844F-4467-989B-0D470C952645} = {C13149C2-A9D6-4423-98CB-48018F859257}
 		{18DD6A0D-371C-4281-8C4D-F4E8CE135B3A} = {F6E7F5AA-A390-49CF-AE3D-A11F4E45EFDA}
 		{EA929CAD-4D48-42BC-A8AC-ABB75C68134C} = {C13149C2-A9D6-4423-98CB-48018F859257}
+		{0C9B955D-0134-4DFF-A168-A6A8D90C7989} = {79BDE00B-2919-49DB-9E13-F6CC74AB4C7E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0BD7C363-2B34-423C-8587-41822922CFD8}

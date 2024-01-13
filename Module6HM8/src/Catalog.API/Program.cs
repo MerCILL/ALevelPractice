@@ -4,8 +4,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+});
+
+string connectionString;
+if (Environment.GetEnvironmentVariable("DOCKER_ENV") != null)
+{
+    connectionString = builder.Configuration.GetConnectionString("DockerCatalogDB");
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("CatalogDB");
+}
+
 builder.Services.AddDbContext<CatalogDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("CatalogDB")));
+    options.UseNpgsql(connectionString));
+
 builder.Services.AddScoped<CatalogDbContextSeed>();
 
 builder.Services.AddScoped<ICatalogTypeRepository, CatalogTypeRepository>();
@@ -74,6 +91,18 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "CorsPolicy",
+        builder => builder
+            .SetIsOriginAllowed((host) => true)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -88,7 +117,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();

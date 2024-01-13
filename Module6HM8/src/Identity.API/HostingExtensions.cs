@@ -22,7 +22,12 @@ internal static class HostingExtensions
             .AddInMemoryClients(Config.Clients)
             .AddTestUsers(TestUsers.Users);
 
-    /*    builder.Services.AddAuthorization()*/;
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.Cookie.SameSite = SameSiteMode.None;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        });
+
 
         return builder.Build();
     }
@@ -37,10 +42,8 @@ internal static class HostingExtensions
         }
 
         app.UseIdentityServer();
-
         app.UseStaticFiles();
         app.UseRouting();
-
 
         app.UseAuthentication();
         app.UseAuthorization();

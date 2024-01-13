@@ -2,7 +2,7 @@
 
 [ApiController]
 [Route("api/catalog")]
-[Authorize(Policy = "RequireAuthenticatedUser")]
+//[Authorize(Policy = "RequireAuthenticatedUser")]
 public class CatalogItemController : ControllerBase
 {
     private readonly ICatalogItemService _catalogItemService;

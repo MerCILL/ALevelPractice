@@ -17,6 +17,8 @@ builder.Services.AddScoped<ICatalogBrandRepository, CatalogBrandRepository>();
 builder.Services.AddScoped<ICatalogBrandService, CatalogBrandService>();
 builder.Services.AddScoped<ICatalogItemRepository, CatalogItemRepository>();
 builder.Services.AddScoped<ICatalogItemService, CatalogItemService>();
+builder.Services.AddScoped<ICatalogBffRepository, CatalogBffRepository>();
+builder.Services.AddScoped<ICatalogBffService, CatalogBffService>();
 
 var app = builder.Build();
 

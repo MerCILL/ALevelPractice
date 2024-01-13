@@ -1,7 +1,4 @@
-﻿using Catalog.API.Data.Entities;
-using Catalog.API.Models;
-
-namespace Catalog.API.Services;
+﻿namespace Catalog.API.Services;
 public class CatalogBrandService : ICatalogBrandService
 {
     private readonly ICatalogBrandRepository _catalogBrandRepository;

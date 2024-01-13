@@ -18,8 +18,6 @@ public class CatalogItemEntityConfiguration : IEntityTypeConfiguration<CatalogIt
         builder.Property(item => item.Description)
             .HasMaxLength(150);
 
-        builder.Ignore(item => item.PictureUri);
-
         builder.Property(item => item.Price)
             .IsRequired();
 

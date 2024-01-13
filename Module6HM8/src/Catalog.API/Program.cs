@@ -1,5 +1,3 @@
-using Catalog.API.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,6 +15,8 @@ builder.Services.AddScoped<ICatalogTypeRepository, CatalogTypeRepository>();
 builder.Services.AddScoped<ICatalogTypeService, CatalogTypeService>();
 builder.Services.AddScoped<ICatalogBrandRepository, CatalogBrandRepository>();
 builder.Services.AddScoped<ICatalogBrandService, CatalogBrandService>();
+builder.Services.AddScoped<ICatalogItemRepository, CatalogItemRepository>();
+builder.Services.AddScoped<ICatalogItemService, CatalogItemService>();
 
 var app = builder.Build();
 

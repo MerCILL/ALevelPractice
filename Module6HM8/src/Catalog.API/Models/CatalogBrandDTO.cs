@@ -1,8 +1,8 @@
-﻿namespace Catalog.API.Models
+﻿namespace Catalog.API.Models;
+
+public class CatalogBrandDTO
 {
-    public class CatalogBrandDTO
-    {
-        public int Id { get; set; }
-        public string Brand { get; set; }
-    }
+    public int Id { get; set; }
+    public string Brand { get; set; }
 }
+

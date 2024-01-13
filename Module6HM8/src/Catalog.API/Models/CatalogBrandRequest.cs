@@ -1,7 +1,7 @@
-﻿namespace Catalog.API.Models
+﻿namespace Catalog.API.Models;
+
+public class CatalogBrandRequest
 {
-    public class CatalogBrandRequest
-    {
-        public string BrandName { get; set; }
-    }
+    public string BrandName { get; set; }
 }
+

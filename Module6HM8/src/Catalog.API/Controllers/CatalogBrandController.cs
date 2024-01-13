@@ -1,7 +1,7 @@
 ﻿namespace Catalog.API.Controllers;
 
 [ApiController]
-[Route("/api/catalog")]
+[Route("api/catalog")]
 public class CatalogBrandController : ControllerBase
 {
     private readonly ICatalogBrandService _catalogBrandService;

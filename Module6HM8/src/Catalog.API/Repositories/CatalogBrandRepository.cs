@@ -16,20 +16,20 @@ public class CatalogBrandRepository : ICatalogBrandRepository
         return await _dbContext.CatalogBrands.AsNoTracking().OrderBy(brand => brand.Id).ToListAsync();
     }
 
-    public async Task<int> Add(CatalogBrand CatalogBrand)
+    public async Task<int> Add(CatalogBrand catalogBrand)
     {
-        _dbContext.CatalogBrands.Add(CatalogBrand);
+        _dbContext.CatalogBrands.Add(catalogBrand);
 
         await _dbContext.SaveChangesAsync();
 
-        return CatalogBrand.Id;
+        return catalogBrand.Id;
     }
 
-    public async Task Update(CatalogBrand CatalogBrand)
+    public async Task Update(CatalogBrand catalogBrand)
     {
-        var existingCatalogBrand = await _dbContext.CatalogBrands.FirstOrDefaultAsync(brand => brand.Id == CatalogBrand.Id);
+        var existingCatalogBrand = await _dbContext.CatalogBrands.FirstOrDefaultAsync(brand => brand.Id == catalogBrand.Id);
 
-        existingCatalogBrand.Brand = CatalogBrand.Brand;
+        existingCatalogBrand.Brand = catalogBrand.Brand;
 
         await _dbContext.SaveChangesAsync();
     }
@@ -43,12 +43,12 @@ public class CatalogBrandRepository : ICatalogBrandRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<CatalogBrand> GetByName(string brandName)
+    public async Task<CatalogBrand?> GetByName(string brandName)
     {
         return await _dbContext.CatalogBrands.FirstOrDefaultAsync(brand => brand.Brand == brandName);
     }
 
-    public async Task<CatalogBrand> GetById(int id)
+    public async Task<CatalogBrand?> GetById(int id)
     {
         return await _dbContext.CatalogBrands.FirstOrDefaultAsync(brand => brand.Id == id);
     }

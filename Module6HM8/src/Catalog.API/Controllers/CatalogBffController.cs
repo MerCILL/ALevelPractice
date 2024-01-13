@@ -20,6 +20,8 @@ public class CatalogBffController : ControllerBase
     [HttpPost("types")]
     public async Task<IActionResult> GetTypes([FromBody] PaginatedRequest request)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         try
         {
             var types = await _catalogBffService.GetTypes(request.PageIndex, request.PageSize);
@@ -34,6 +36,8 @@ public class CatalogBffController : ControllerBase
     [HttpPost("brands")]
     public async Task<IActionResult> GetBrands([FromBody] PaginatedRequest request)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         try
         {
             var brands = await _catalogBffService.GetBrands(request.PageIndex, request.PageSize);
@@ -48,6 +52,8 @@ public class CatalogBffController : ControllerBase
     [HttpPost("items")]
     public async Task<IActionResult> GetItems([FromBody] PaginatedItemsRequest request)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         try
         {
             var items = await _catalogBffService.GetItems(request);

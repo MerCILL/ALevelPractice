@@ -18,6 +18,9 @@ public class CatalogTypeController : ControllerBase
     [HttpGet("types")]
     public async Task<IActionResult> Get([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 5)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
+
         var types = await _catalogTypeService.Get(pageIndex, pageSize);
         return Ok(types);
     }
@@ -25,6 +28,8 @@ public class CatalogTypeController : ControllerBase
     [HttpPost("types")]
     public async Task<IActionResult> Add([FromBody] CatalogTypeRequest request)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         try
         {
             var id = await _catalogTypeService.Add(request);
@@ -39,6 +44,8 @@ public class CatalogTypeController : ControllerBase
     [HttpPut("types/{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] CatalogTypeRequest request)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         try
         {
             var updatedCatalogType = await _catalogTypeService.Update(new CatalogType { Id = id, Type = request.TypeName });
@@ -53,6 +60,8 @@ public class CatalogTypeController : ControllerBase
     [HttpDelete("types/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         try
         {
             var deletedId = await _catalogTypeService.Delete(id);

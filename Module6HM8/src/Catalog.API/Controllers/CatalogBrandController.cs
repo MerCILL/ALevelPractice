@@ -18,6 +18,8 @@ public class CatalogBrandController : ControllerBase
     [HttpGet("brands")]
     public async Task<IActionResult> Get([FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 5)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         var types = await _catalogBrandService.Get(pageIndex, pageSize);
         return Ok(types);
     }
@@ -25,6 +27,8 @@ public class CatalogBrandController : ControllerBase
     [HttpPost("brands")]
     public async Task<IActionResult> Add([FromBody] CatalogBrandRequest request)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         try
         {
             var id = await _catalogBrandService.Add(request);
@@ -39,6 +43,8 @@ public class CatalogBrandController : ControllerBase
     [HttpPut("brands/{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] CatalogBrandRequest request)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         try
         {
             var updatedCatalogBrand = await _catalogBrandService.Update(new CatalogBrand { Id = id, Brand = request.BrandName });
@@ -53,6 +59,8 @@ public class CatalogBrandController : ControllerBase
     [HttpDelete("brands/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
+        if (!ModelState.IsValid) BadRequest(ModelState);
+
         try
         {
             var deletedId = await _catalogBrandService.Delete(id);

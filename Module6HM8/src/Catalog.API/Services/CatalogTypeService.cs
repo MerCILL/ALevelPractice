@@ -79,5 +79,7 @@ public class CatalogTypeService : ICatalogTypeService
         return id;
     }
 
+
+
 }
 

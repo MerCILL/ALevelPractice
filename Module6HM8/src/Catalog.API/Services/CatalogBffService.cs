@@ -6,11 +6,11 @@ namespace Catalog.API.Services;
 public class CatalogBffService : ICatalogBffService
 {
     private readonly ICatalogBffRepository _catalogBffRepository;
-    private readonly ILogger<CatalogBffRepository> _logger;
+    private readonly ILogger<CatalogBffService> _logger;
 
     public CatalogBffService(
         ICatalogBffRepository catalogBffRepository,
-        ILogger<CatalogBffRepository> logger)
+        ILogger<CatalogBffService> logger)
     {
         _catalogBffRepository = catalogBffRepository;
         _logger = logger;

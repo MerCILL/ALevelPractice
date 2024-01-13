@@ -4,6 +4,7 @@ namespace Catalog.API.Controllers;
 
 [ApiController]
 [Route("api/catalog/bff")]
+[Authorize(Policy = "RequireAuthenticatedUser")]
 public class CatalogBffController : ControllerBase
 {
     private readonly ICatalogBffService _catalogBffService;

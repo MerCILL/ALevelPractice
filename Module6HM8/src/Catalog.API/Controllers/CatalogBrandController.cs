@@ -2,6 +2,7 @@
 
 [ApiController]
 [Route("api/catalog")]
+[Authorize(Policy = "RequireAuthenticatedUser")]
 public class CatalogBrandController : ControllerBase
 {
     private readonly ICatalogBrandService _catalogBrandService;

@@ -11,14 +11,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 string connectionString;
-if (Environment.GetEnvironmentVariable("DOCKER_ENV") != null)
-{
-    connectionString = builder.Configuration.GetConnectionString("DockerCatalogDB");
-}
-else
-{
-    connectionString = builder.Configuration.GetConnectionString("CatalogDB");
-}
+if (Environment.GetEnvironmentVariable("DOCKER_ENV") != null) connectionString = builder.Configuration.GetConnectionString("DockerCatalogDB");
+else connectionString = builder.Configuration.GetConnectionString("CatalogDB");
+
 
 builder.Services.AddDbContext<CatalogDbContext>(options =>
     options.UseNpgsql(connectionString));
